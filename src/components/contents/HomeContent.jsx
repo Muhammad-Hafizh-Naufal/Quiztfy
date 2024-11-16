@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import categories from "../../data/categories.json";
+import course from "../../data/course.json";
 import "../../../src/App.css";
 
 export default function Content() {
@@ -16,7 +16,7 @@ export default function Content() {
 
       {/* Cards Container */}
       <div className="d-flex flex-wrap justify-content-center gap-3">
-        {categories.map((category, index) => (
+        {course.map((category, index) => (
           // Single Card
           <div key={index} className="col-12 col-md-6 col-lg-3 mb-4">
             <div className="card h-100 rounded-4 border-0 shadow-sm">
