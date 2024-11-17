@@ -3,48 +3,174 @@
     "name": "Artificial Intelligence",
     "img": "assets/category/IKON AI.png",
     "description": "Eksplorasi dunia kecerdasan buatan, uji wawasan AI Anda, dan ketahui langkah-langkah berkarir di bidang teknologi pintar.",
-    "course": ["Materi", "Quiz", "Jenjang Karir"]
+    "materi": [
+      "Pengenalan Kecerdasan Buatan (AI)",
+      "Jenis-jenis Kecerdasan Buatan: Narrow AI, General AI, dan Super AI",
+      "Algoritma dalam AI: Jaringan Saraf Tiruan, Pembelajaran Mesin",
+      "Aplikasi AI di Dunia Nyata: Asisten Virtual, Mobil Otonom"
+    ],
+    "quiz": [
+      {
+        "question": "Apa yang dimaksud dengan kecerdasan buatan (AI)?",
+        "options": [
+          "Program komputer yang dapat berpikir dan belajar",
+          "Perangkat keras komputer",
+          "Sistem operasi untuk smartphone",
+          "Bahasa pemrograman"
+        ],
+        "answer": "Program komputer yang dapat berpikir dan belajar"
+      }
+    ]
   },
   {
     "name": "Data Analyst",
     "img": "assets/category/IKON DA.png",
     "description": "Dalami keterampilan analisis data, uji kemampuan Anda, dan ikuti roadmap menuju karir sebagai Data Analyst.",
-    "course": ["Materi", "Quiz", "Jenjang Karir"]
+    "materi": [
+      "Dasar-dasar Analisis Data",
+      "Tools yang Digunakan Data Analyst: Excel, SQL, Python",
+      "Teknik Visualisasi Data: Grafik, Dashboard",
+      "Statistika Dasar untuk Analisis Data"
+    ],
+    "quiz": [
+      {
+        "question": "Apa yang biasa digunakan Data Analyst untuk memvisualisasikan data?",
+        "options": [
+          "Python dan Matplotlib",
+          "Microsoft Word",
+          "Adobe Photoshop",
+          "Google Drive"
+        ],
+        "answer": "Python dan Matplotlib"
+      }
+    ]
   },
   {
     "name": "Machine Learning",
     "img": "assets/category/IKON ML.png",
     "description": "Mulailah memahami dasar-dasar machine learning, ikuti quiz untuk evaluasi, dan temukan jalur menuju profesi di AI dan Data Science.",
-    "course": ["Materi", "Quiz", "Jenjang Karir"]
+    "materi": [
+      "Pengenalan Machine Learning",
+      "Perbedaan Supervised, Unsupervised, dan Reinforcement Learning",
+      "Algoritma Penting: Regresi Linear, K-Nearest Neighbors, Decision Tree",
+      "Penerapan Machine Learning di Dunia Industri"
+    ],
+    "quiz": [
+      {
+        "question": "Apa algoritma machine learning yang digunakan untuk klasifikasi?",
+        "options": [
+          "Regresi Linear",
+          "K-Nearest Neighbors (KNN)",
+          "Quicksort",
+          "Blockchain"
+        ],
+        "answer": "K-Nearest Neighbors (KNN)"
+      }
+    ]
   },
   {
     "name": "Web Development",
     "img": "assets/category/IKON WEBDEV.png",
     "description": "Pelajari dasar pembuatan website, ikuti quiz untuk menguji pemahaman, dan temukan jalur karir sebagai Web Developer.",
-    "course": ["Materi", "Quiz", "Jenjang Karir"]
+    "materi": [
+      "HTML, CSS, dan JavaScript: Fondasi Web Development",
+      "Kerangka Kerja Frontend: React.js, Vue.js, Angular",
+      "Pengembangan Backend: Node.js, Express.js, Django",
+      "Praktik Terbaik untuk Pengembangan Web Responsif"
+    ],
+    "quiz": [
+      {
+        "question": "Apa kerangka kerja frontend yang populer?",
+        "options": ["React.js", "C++", "Ruby", "Django"],
+        "answer": "React.js"
+      }
+    ]
   },
   {
     "name": "Mobile Development",
     "img": "assets/category/MOBDEV.png",
     "description": "Pelajari pembuatan aplikasi mobile, uji kemampuan Anda melalui kuis, dan rencanakan langkah menuju menjadi Mobile Developer.",
-    "course": ["Materi", "Quiz", "Jenjang Karir"]
+    "materi": [
+      "Platform Mobile Development: Android vs iOS",
+      "Bahasa Pemrograman Mobile: Kotlin, Swift, React Native",
+      "Arsitektur Aplikasi Mobile: MVVM, MVP",
+      "Integrasi API dalam Aplikasi Mobile"
+    ],
+    "quiz": [
+      {
+        "question": "Apa bahasa pemrograman utama untuk Android?",
+        "options": ["Swift", "Kotlin", "HTML", "PHP"],
+        "answer": "Kotlin"
+      }
+    ]
   },
   {
     "name": "Full Stack Development",
     "img": "assets/category/IKON FS.png",
     "description": "Pelajari pembuatan aplikasi dari ujung ke ujung, uji pemahaman Anda, dan lihat langkah menjadi Full Stack Developer.",
-    "course": ["Materi", "Quiz", "Jenjang Karir"]
+    "materi": [
+      "Konsep Full Stack Development: Frontend dan Backend",
+      "Teknologi Full Stack: MERN (MongoDB, Express, React, Node.js)",
+      "Pengelolaan Database: SQL dan NoSQL",
+      "Prinsip CI/CD dalam Pengembangan Aplikasi"
+    ],
+    "quiz": [
+      {
+        "question": "Apa arti dari full stack development?",
+        "options": [
+          "Mengembangkan aplikasi dari sisi frontend dan backend",
+          "Hanya pengembangan frontend",
+          "Hanya pengembangan backend",
+          "Pengembangan game"
+        ],
+        "answer": "Mengembangkan aplikasi dari sisi frontend dan backend"
+      }
+    ]
   },
   {
     "name": "Internet Of Things",
     "img": "assets/category/IKON IOT.png",
     "description": "Pelajari bagaimana perangkat cerdas terhubung, asah pengetahuan IoT melalui quiz, dan pahami potensi karir di IoT.",
-    "course": ["Materi", "Quiz", "Jenjang Karir"]
+    "materi": [
+      "Pengenalan Internet of Things (IoT)",
+      "Komunikasi antar perangkat: Protokol dan Standar IoT",
+      "Platform IoT: Arduino, Raspberry Pi",
+      "Contoh Kasus IoT di Industri: Smart Home, Kesehatan"
+    ],
+    "quiz": [
+      {
+        "question": "Apa itu IoT?",
+        "options": [
+          "Jaringan perangkat yang terhubung dan saling berkomunikasi",
+          "Sistem operasi komputer",
+          "Protokol jaringan komputer",
+          "Bahasa pemrograman untuk database"
+        ],
+        "answer": "Jaringan perangkat yang terhubung dan saling berkomunikasi"
+      }
+    ]
   },
   {
     "name": "UI/UX Design",
     "img": "assets/category/IKON UI UX.png",
     "description": "Kenali prinsip desain antarmuka yang menarik, uji pengetahuan desain Anda, dan lihat peluang karir di bidang UI/UX.",
-    "course": ["Materi", "Quiz", "Jenjang Karir"]
+    "materi": [
+      "Prinsip Desain Antarmuka: Konsistensi, Hierarki Visual",
+      "Proses Desain UX: Penelitian Pengguna, Wireframing, Prototyping",
+      "Tools Populer: Figma, Adobe XD, Sketch",
+      "Tren Desain Modern: Dark Mode, Microinteractions"
+    ],
+    "quiz": [
+      {
+        "question": "Apa alat yang sering digunakan untuk desain UI?",
+        "options": [
+          "Figma",
+          "Microsoft Excel",
+          "Photoshop Lightroom",
+          "AutoCAD"
+        ],
+        "answer": "Figma"
+      }
+    ]
   }
 ]
