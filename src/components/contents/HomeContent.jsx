@@ -30,7 +30,10 @@ export default function Content() {
               </div>
               <div className="card-body">
                 <h5 className="card-title fw-semibold mb-3">
-                  <Link to="/course" className="text-decoration-none text-dark">
+                  <Link
+                    to={"/course/category.name.toLowerCase()"}
+                    className="text-decoration-none text-dark"
+                  >
                     {category.name}
                   </Link>
                 </h5>

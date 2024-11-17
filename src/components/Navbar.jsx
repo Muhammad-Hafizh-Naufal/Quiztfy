@@ -8,6 +8,7 @@ export default function Navbar() {
         <div className="container-fluid">
           {/* Logo dan Nama Brand */}
           <a className="navbar-brand d-flex align-items-center" href="/">
+            {" "}
             <img
               src="assets/LOGO FULL.png"
               alt="Logo"

@@ -39,10 +39,7 @@ export default function CategoryContent() {
               </div>
               <div className="card-body  ">
                 <h5 className="card-title text-center fw-semibold mb-3">
-                  <Link
-                    to="/comming"
-                    className=" text-decoration-none text-dark "
-                  >
+                  <Link to="/quiz" className=" text-decoration-none text-dark ">
                     Materi
                   </Link>
                 </h5>
