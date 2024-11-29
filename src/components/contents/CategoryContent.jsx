@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import "../../../src/App.css";
-import "../../styles/Category.css";
+// import "../../styles/Category.css";
 // import courses from "../../data/course.json";
 
 export default function CategoryContent() {

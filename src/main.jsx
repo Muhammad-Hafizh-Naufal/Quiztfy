@@ -4,10 +4,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Home from "./pages/Home.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
-import Help from "./pages/Help.jsx";
+import Team from "./pages/Team.jsx";
 import Course from "./pages/Course.jsx";
 import CommingSoon from "./pages/CommingSoon.jsx";
-// import Quiz from "./pages/Quiz.jsx";
+import Quiz from "./pages/Quiz.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,12 +19,12 @@ const router = createBrowserRouter([
     element: <AboutUs />,
   },
   {
-    path: "/help",
-    element: <Help />,
+    path: "/team",
+    element: <Team />,
   },
   {
-    path: "/course/:categoryName",
-    element: <Course />,
+    path: "/Quiz/:categoryName",
+    element: <Quiz />,
   },
   {
     path: "/materi",
@@ -37,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: "/comming",
     element: <CommingSoon />,
+  },
+  {
+    path: "/Course",
+    element: <Course />,
   },
 ]);
 

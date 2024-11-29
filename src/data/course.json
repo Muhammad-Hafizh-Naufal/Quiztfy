@@ -19,6 +19,96 @@
           "Bahasa pemrograman"
         ],
         "answer": "Program komputer yang dapat berpikir dan belajar"
+      },
+      {
+        "question": "Apa yang dimaksud dengan Narrow AI?",
+        "options": [
+          "AI yang dirancang untuk tugas spesifik",
+          "AI yang memiliki kecerdasan setara manusia",
+          "AI yang dapat menguasai semua bidang",
+          "AI yang tidak memiliki batasan kemampuan"
+        ],
+        "answer": "AI yang dirancang untuk tugas spesifik"
+      },
+      {
+        "question": "Apa yang membedakan General AI dari Narrow AI?",
+        "options": [
+          "Kemampuan untuk berpikir dan memahami berbagai konteks",
+          "Hanya fokus pada satu tugas",
+          "Tidak memiliki kemampuan pemikiran",
+          "Hanya digunakan untuk permainan komputer"
+        ],
+        "answer": "Kemampuan untuk berpikir dan memahami berbagai konteks"
+      },
+      {
+        "question": "Apa itu Jaringan Saraf Tiruan?",
+        "options": [
+          "Algoritma AI yang terinspirasi struktur otak manusia",
+          "Sistem operasi komputer",
+          "Bahasa pemrograman khusus",
+          "Perangkat keras komputer"
+        ],
+        "answer": "Algoritma AI yang terinspirasi struktur otak manusia"
+      },
+      {
+        "question": "Contoh aplikasi AI di dunia nyata adalah?",
+        "options": [
+          "Asisten virtual seperti Siri atau Alexa",
+          "Mesin cuci",
+          "Televisi",
+          "Kalkulator"
+        ],
+        "answer": "Asisten virtual seperti Siri atau Alexa"
+      },
+      {
+        "question": "Apa yang dimaksud dengan Super AI?",
+        "options": [
+          "AI yang memiliki kecerdasan melebihi manusia",
+          "AI yang hanya digunakan di industri tertentu",
+          "AI dengan kemampuan terbatas",
+          "AI untuk permainan komputer"
+        ],
+        "answer": "AI yang memiliki kecerdasan melebihi manusia"
+      },
+      {
+        "question": "Apa itu Pembelajaran Mesin?",
+        "options": [
+          "Proses di mana komputer belajar dari data tanpa pemrograman eksplisit",
+          "Proses mematikan komputer",
+          "Metode pembuatan perangkat keras",
+          "Cara menulis program komputer"
+        ],
+        "answer": "Proses di mana komputer belajar dari data tanpa pemrograman eksplisit"
+      },
+      {
+        "question": "Teknologi AI apa yang digunakan pada mobil otonom?",
+        "options": [
+          "Pengenalan pola dan machine learning",
+          "Sistem operasi khusus",
+          "Bahasa pemrograman tertentu",
+          "Perangkat keras sederhana"
+        ],
+        "answer": "Pengenalan pola dan machine learning"
+      },
+      {
+        "question": "Bidang apa saja yang dapat diaplikasikan AI?",
+        "options": [
+          "Kesehatan, keuangan, transportasi, pendidikan",
+          "Hanya industri teknologi",
+          "Hanya permainan komputer",
+          "Tidak ada aplikasi praktis"
+        ],
+        "answer": "Kesehatan, keuangan, transportasi, pendidikan"
+      },
+      {
+        "question": "Apa tantangan utama pengembangan AI?",
+        "options": [
+          "Etika, privasi data, dan keamanan",
+          "Kecepatan komputer",
+          "Warna layar komputer",
+          "Ukuran perangkat keras"
+        ],
+        "answer": "Etika, privasi data, dan keamanan"
       }
     ]
   },

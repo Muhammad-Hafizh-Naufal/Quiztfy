@@ -70,11 +70,11 @@ export default function Navbar() {
                 </li>
                 <li className="nav-item">
                   <Link
-                    to={"/help"}
+                    to={"/Team"}
                     className="nav-link position-relative px-3"
                     href="#"
                   >
-                    <span className="position-relative">Help</span>
+                    <span className="position-relative">Team</span>
                   </Link>
                 </li>
               </ul>

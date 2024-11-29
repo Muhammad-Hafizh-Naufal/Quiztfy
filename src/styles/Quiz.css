@@ -1,0 +1,17 @@
+.full-page-bg {
+  background-color: #f8f9fa;
+  background-image: url("/assets/background.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.score-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 1.5rem;
+}
