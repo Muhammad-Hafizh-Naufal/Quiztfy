@@ -8,6 +8,7 @@ import Team from "./pages/Team.jsx";
 import Course from "./pages/Course.jsx";
 import CommingSoon from "./pages/CommingSoon.jsx";
 import Quiz from "./pages/Quiz.jsx";
+import Login from "./pages/Login.jsx";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <CommingSoon />,
+    element: <Login />,
   },
   {
     path: "/comming",

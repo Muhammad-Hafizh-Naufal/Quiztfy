@@ -1,0 +1,34 @@
+.auth {
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  font-size: 32px;
+  font-weight: bold;
+  color: #264653;
+}
+p {
+  color: #264653;
+}
+
+.intruction {
+  color: rgba(38, 70, 83, 0.7);
+  font-weight: lighter;
+  margin-bottom: 6px;
+}
+
+.auth .form-control {
+  border-radius: 20px;
+  padding: 10px 20px;
+  border: 1px solid rgb(136, 136, 136);
+}
+
+.auth button {
+  margin-top: 1rem;
+  border-radius: 50px;
+  padding: 10px 50px;
+  font-weight: bolder;
+  background-color: #299ebc;
+  border-color: #299ebc;
+}
