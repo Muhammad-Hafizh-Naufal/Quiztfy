@@ -1,23 +1,25 @@
-// import "../styles/Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Navbar() {
-  return (
-    <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light rounded-bottom-5 shadow sticky-top">
-        <div className="container-fluid">
-          {/* Logo dan Nama Brand */}
-          <a className="navbar-brand d-flex align-items-center" href="/">
-            {" "}
-            <img
-              src="assets/LOGO FULL.png"
-              alt="Logo"
-              height="60"
-              className="d-inline-block align-top me-2"
-            />
-          </a>
+  const location = useLocation();
 
-          {/* Tombol Toggle untuk Navbar di perangkat kecil */}
+  const isLoginPage = location.pathname === "/login";
+
+  return (
+    <nav className="navbar navbar-expand-lg navbar-light bg-light rounded-bottom-5 shadow sticky-top">
+      <div className="container-fluid">
+        {/* Logo dan Nama Brand */}
+        <a className="navbar-brand d-flex align-items-center" href="/">
+          <img
+            src="assets/LOGO FULL.png"
+            alt="Logo"
+            height="60"
+            className="d-inline-block align-top me-2"
+          />
+        </a>
+
+        {/* Jika bukan halaman login, tampilkan tombol toggle untuk menu */}
+        {!isLoginPage && (
           <button
             className="navbar-toggler border-0"
             type="button"
@@ -29,8 +31,10 @@ export default function Navbar() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
+        )}
 
-          {/* Menu Navbar dengan Offcanvas untuk Mobile */}
+        {/* Menu Navbar dengan Offcanvas untuk Mobile, ditampilkan hanya jika bukan halaman login */}
+        {!isLoginPage && (
           <div
             className="offcanvas offcanvas-end"
             tabIndex="-1"
@@ -79,7 +83,6 @@ export default function Navbar() {
                 </li>
               </ul>
 
-              {/* Opsi Login */}
               <div className="d-flex align-items-center gap-2 mt-3 mt-lg-0 justify-content-center">
                 <p className="m-0 d-none d-sm-block">
                   Already have an account?{" "}
@@ -92,8 +95,19 @@ export default function Navbar() {
               </div>
             </div>
           </div>
+        )}
+      </div>
+
+      {isLoginPage && (
+        <div className="d-flex align-items-center gap-2 mt-3 mt-lg-0 me-3">
+          <p className="m-0">Don't have an account? </p>
+          <Link to="/login">
+            <button className="btn btn-outline-dark rounded-pill px-4 border-0">
+              Login
+            </button>
+          </Link>
         </div>
-      </nav>
-    </>
+      )}
+    </nav>
   );
 }
