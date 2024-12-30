@@ -1,4 +1,4 @@
-.auth {
+.content {
   display: flex;
   flex-direction: column;
 }
@@ -18,17 +18,43 @@ p {
   margin-bottom: 6px;
 }
 
-.auth .form-control {
+.content .form-control {
   border-radius: 20px;
   padding: 10px 20px;
   border: 1px solid rgb(136, 136, 136);
 }
 
-.auth button {
+.content button {
   margin-top: 1rem;
   border-radius: 50px;
   padding: 10px 50px;
   font-weight: bolder;
   background-color: #299ebc;
   border-color: #299ebc;
+}
+
+.auth-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-image img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media screen and (max-width: 768px) {
+  .auth-container {
+    flex-direction: column;
+  }
+
+  .auth-image {
+    display: none;
+    order: -1;
+    margin-bottom: 20px;
+    text-align: center;
+  }
 }
