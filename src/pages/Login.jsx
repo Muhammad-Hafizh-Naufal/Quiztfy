@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import LoginContent from "../components/contents/LoginContent"; // Rename di sini
+import LoginContent from "../components/contents/LoginContent";
 
 function Login() {
   return (

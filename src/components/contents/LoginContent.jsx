@@ -1,26 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
-import loginImage from "../../../public/assets/1_login.png";
-import "../../../src/styles/Login.css";
+import { Form, Button, Container } from "react-bootstrap";
+import AuthImage from "/assets/auth.png";
+import "../../../src/styles/Auth.css";
 
 function LoginContent() {
   return (
-    <div className="login-page bg-white">
+    <div className="auth-page bg-white">
       <Container className="mt-5">
-        <Row className="align-items-center">
-          {/* ilustrasi */}
-          <Col md={6} className="text-start">
+        <div className="row align-items-center auth-container">
+          <div className="col auth-image">
             <img
-              src={loginImage}
+              src={AuthImage}
               alt="Login Illustration"
               className="img-left"
             />
-          </Col>
+          </div>
 
-          {/* Form */}
-          <Col md={6}>
-            <div className="p-4 auth ">
+          <div className="col auth-form">
+            <div className="p-4 content">
               <h2 className="text-start">Welcome To Tech Quiztify</h2>
               <p className="mb-4 text-start">Login your account</p>
               <p className="text-start intruction">
@@ -48,8 +45,8 @@ function LoginContent() {
                 </Button>
               </Form>
             </div>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Container>
     </div>
   );
