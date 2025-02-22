@@ -71,10 +71,10 @@ export default function Navbar() {
                 </li>
                 <li className="nav-item">
                   <Link
-                    to={"/Team"}
+                    to={"/Leaderboard"}
                     className="nav-link position-relative px-3"
                   >
-                    <span className="position-relative">Team</span>
+                    <span className="position-relative">Leaderboard</span>
                   </Link>
                 </li>
               </ul>

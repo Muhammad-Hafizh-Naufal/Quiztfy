@@ -1,12 +1,12 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import HelpContent from "../components/contents/HelpContent";
-export default function Help() {
+import Leaderboard from "../components/contents/Leaderboard";
+export default function leaderboard() {
   return (
     <>
       <div>
         <Navbar />
-        <HelpContent />
+        <Leaderboard />
         <Footer />
       </div>
     </>

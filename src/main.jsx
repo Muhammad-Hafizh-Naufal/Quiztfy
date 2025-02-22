@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Home from "./pages/Home.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
-import Team from "./pages/Team.jsx";
+import Leaderboard from "./pages/Team.jsx";
 import Course from "./pages/Course.jsx";
 import CommingSoon from "./pages/CommingSoon.jsx";
 import Quiz from "./pages/Quiz.jsx";
@@ -21,8 +21,8 @@ const router = createBrowserRouter([
     element: <AboutUs />,
   },
   {
-    path: "/team",
-    element: <Team />,
+    path: "/leaderboard",
+    element: <Leaderboard />,
   },
   {
     path: "/Quiz/:categoryName",
