@@ -1,8 +1,36 @@
-import React from "react";
 import "../../../src/styles/Auth.css";
 import AuthImage from "/assets/auth.png";
+import { useState } from "react";
+import service from "../../services/service";
 
 function RegisterContent() {
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+  });
+
+  const [message, setMessage] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await service.register(formData);
+      setMessage(response.message);
+      setFormData({
+        fullName: "",
+        email: "",
+        password: "",
+      });
+    } catch (error) {
+      setMessage(error.message);
+    }
+  };
+
   return (
     <div className="auth-page bg-white">
       <div className="container mt-5">
@@ -24,12 +52,16 @@ function RegisterContent() {
               <p className="text-start intruction">
                 Please fill in the information below
               </p>
+              {message && <p className="alert alert-info">{message}</p>}
 
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="form-group mb-3">
                   <input
                     type="text"
-                    placeholder="Name"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    placeholder="FullName"
                     className="form-control"
                     required
                   />
@@ -38,6 +70,9 @@ function RegisterContent() {
                 <div className="form-group mb-3">
                   <input
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     placeholder="Email"
                     className="form-control"
                     required
@@ -47,6 +82,9 @@ function RegisterContent() {
                 <div className="form-group mb-3">
                   <input
                     type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
                     placeholder="Password"
                     className="form-control"
                     required

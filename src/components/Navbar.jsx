@@ -1,7 +1,27 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null); // State untuk menyimpan informasi pengguna
+
+  // Fungsi untuk memeriksa apakah pengguna sudah login
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      // Decode token untuk mendapatkan informasi pengguna
+      const decodedToken = JSON.parse(atob(token.split(".")[1]));
+      setUser(decodedToken); // Simpan informasi pengguna ke state
+    }
+  }, []);
+
+  // Fungsi untuk logout
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Hapus token dari localStorage
+    setUser(null); // Reset state pengguna
+    navigate("/login"); // Arahkan pengguna ke halaman login
+  };
 
   const isAuthPage =
     location.pathname === "/login" || location.pathname === "/register";
@@ -79,16 +99,29 @@ export default function Navbar() {
                 </li>
               </ul>
 
-              <div className="d-flex align-items-center gap-2 mt-3 mt-lg-0 justify-content-center">
-                <p className="m-0 d-none d-sm-block">
-                  Already have an account?{" "}
-                </p>
-                <Link to="/login">
-                  <button className="btn btn-outline-dark rounded-pill px-4 border-0">
-                    Login
+              {/* Tampilkan nama pengguna dan tombol logout jika sudah login */}
+              {user ? (
+                <div className="d-flex align-items-center gap-3 justify-content-center">
+                  <p className="m-0">Welcome, {user.email}</p>
+                  <button
+                    onClick={handleLogout}
+                    className="btn btn-outline-danger rounded-pill px-4"
+                  >
+                    Logout
                   </button>
-                </Link>
-              </div>
+                </div>
+              ) : (
+                <div className="d-flex align-items-center gap-2 justify-content-center">
+                  <p className="m-0 d-none d-sm-block">
+                    Already have an account?{" "}
+                  </p>
+                  <Link to="/login">
+                    <button className="btn btn-outline-dark rounded-pill px-4 border-0">
+                      Login
+                    </button>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         )}
