@@ -102,7 +102,7 @@ export default function Navbar() {
               {/* Tampilkan nama pengguna dan tombol logout jika sudah login */}
               {user ? (
                 <div className="d-flex align-items-center gap-3 justify-content-center">
-                  <p className="m-0">Welcome, {user.email}</p>
+                  <p className="m-0">Welcome, {user.fullName}</p>
                   <button
                     onClick={handleLogout}
                     className="btn btn-outline-danger rounded-pill px-4"
