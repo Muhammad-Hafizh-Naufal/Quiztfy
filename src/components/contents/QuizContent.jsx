@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import categories from "../data/course.json";
+import categories from "../../data/course.json";
 
 // import components
 import Navbar from "../Navbar";
