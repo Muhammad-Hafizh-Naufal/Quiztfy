@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:3000/api";
+const API = "https://quizz-be.vercel.app/api";
 
 // leaderboard
 const leaderboard = async () => {
@@ -26,7 +26,6 @@ const register = async (formData) => {
 const login = async (formData) => {
   try {
     const response = await axios.post(`${API}/login`, formData);
-    
 
     return response.data;
   } catch (error) {
