@@ -44,18 +44,18 @@ export default function Content() {
           // Single Card
           <div key={index} className="col-12 col-md-6 col-lg-3 mb-4">
             <div className="card h-100 rounded-4 border-0 shadow-sm">
-              {/* <div className="text-center bg-light p-4 rounded-top-4">
+              <div className="text-center bg-light p-4 rounded-top-4">
                 <img
                   src={category.img}
                   className="card-img-top"
                   alt={`${category.name} Icon`}
                   style={{ maxWidth: "120px" }}
                 />
-              </div> */}
+              </div>
               <div className="card-body">
                 <h5 className="card-title fw-semibold mb-3">
                   <Link
-                    onClick={() => handleStartQuiz(category.title)}
+                    onClick={() => handleStartQuiz(category.id)}
                     className="text-decoration-none text-dark"
                   >
                     {category.title}

@@ -26,6 +26,8 @@ const register = async (formData) => {
 const login = async (formData) => {
   try {
     const response = await axios.post(`${API}/login`, formData);
+    
+
     return response.data;
   } catch (error) {
     console.log(error);
@@ -48,12 +50,51 @@ const getAllQuiz = async () => {
 // get quiz by name/id
 const getQuizById = async (id) => {
   try {
-    const response = await axios.get(`${API}/quiz/${id}`);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    const response = await axios.get(`${API}/quiz/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    const err = error as Error;
+    console.error("Error fetching quiz:", err.message);
+    throw err; // Lempar error agar bisa ditangani oleh komponen
+  }
+};
+
+// question Submit
+
+const questionSubmit = async (formData) => {
+  try {
+    const token = localStorage.getItem("token"); // Ambil token dari localStorage
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    const response = await axios.post(`${API}/quiz/submit`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Sertakan token dalam header
+      },
+    });
     return response.data;
   } catch (error) {
     const err = error as Error;
     console.log(err.message);
+    throw err;
   }
 };
 
-export default { leaderboard, register, login, getAllQuiz, getQuizById };
+export default {
+  leaderboard,
+  register,
+  login,
+  getAllQuiz,
+  getQuizById,
+  questionSubmit,
+};

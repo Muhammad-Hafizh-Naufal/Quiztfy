@@ -1,22 +1,40 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import categories from "../data/course.json";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import service from "../services/service";
 
-// import styles
+// Import styles
 import "../../src/App.css";
 
-// import components
+// Import components
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function QuizContent() {
-  const { categoryName } = useParams();
-  const category = categories.find((cat) => cat.name === categoryName);
-
+  const { id } = useParams();
+  const [quiz, setQuiz] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
   const [timer, setTimer] = useState(60); // Timer for each question
+  const [userAnswers, setUserAnswers] = useState([]);
+
+  useEffect(() => {
+    const fetchQuiz = async () => {
+      try {
+        const data = await service.getQuizById(id);
+        // Parse options untuk setiap pertanyaan
+        const parsedQuestions = data.questions.map((question) => ({
+          ...question,
+          options: JSON.parse(question.options),
+        }));
+        setQuiz({ ...data, questions: parsedQuestions });
+      } catch (error) {
+        console.error("Error fetching quiz:", error);
+      }
+    };
+
+    fetchQuiz();
+  }, [id]);
 
   useEffect(() => {
     if (timer > 0 && !showScore) {
@@ -27,26 +45,57 @@ export default function QuizContent() {
     }
   }, [timer, showScore]);
 
-  if (!category) {
+  if (!quiz) {
     return (
       <div className="container text-center mt-5">
         <div className="alert alert-danger" role="alert">
-          Materi tidak ditemukan
+          Quiz tidak ditemukan
         </div>
       </div>
     );
   }
 
-  const questions = category.quiz;
+  const questions = quiz.questions;
 
-  const handleAnswerClick = (selectedOption) => {
-    if (selectedOption === questions[currentQuestion].answer) {
-      setScore(score + 1);
+  const handleAnswerClick = async (selectedOption) => {
+    const newUserAnswers = [
+      ...userAnswers,
+      {
+        questionId: questions[currentQuestion].id,
+        answer: selectedOption,
+      },
+    ];
+    setUserAnswers(newUserAnswers);
+
+    // Hitung skor
+    const isCorrect =
+      selectedOption === questions[currentQuestion].correctAnswer;
+    if (isCorrect) {
+      setScore((prevScore) => prevScore + 10); // Tambahkan 10 poin jika jawaban benar
     }
+
     setCurrentQuestion((prev) => prev + 1);
     setTimer(60); // Reset timer for the next question
+
     if (currentQuestion + 1 >= questions.length) {
       setShowScore(true);
+
+      // Submit answers to backend
+      try {
+        // Log data yang akan dikirim ke backend
+        console.log("Data yang dikirim ke backend:", {
+          quizId: parseInt(quiz.id),
+          answers: newUserAnswers,
+        });
+
+        await service.questionSubmit({
+          quizId: parseInt(quiz.id), // Kirim quizId
+          answers: newUserAnswers, // Kirim jawaban pengguna
+        });
+      } catch (error) {
+        console.error("Error submitting quiz:", error);
+        alert("Gagal mengirim jawaban. Silakan coba lagi.");
+      }
     }
   };
 
@@ -56,7 +105,7 @@ export default function QuizContent() {
         <Navbar />
         <div className="d-flex text-center p-5 align-items-center justify-content-center">
           <Link
-            className="  d-none d-md-block ms-md-5 position-absolute top-1 start-0 "
+            className="d-none d-md-block ms-md-5 position-absolute top-1 start-0"
             to={"/"}
           >
             <svg
@@ -69,21 +118,23 @@ export default function QuizContent() {
               <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
             </svg>
           </Link>
-          <h1>{category.name}</h1>
+          <h1>{quiz.title}</h1>
         </div>
-        <div className="container flex-grow-1 align-items-center justify-content-center pb-5 ">
+        <div className="container flex-grow-1 align-items-center justify-content-center pb-5">
           <div className="card shadow-lg border-0 rounded-4 overflow-hidden">
             <div className="card-body p-4">
               {showScore ? (
                 <ScoreDisplay
                   score={score}
-                  totalQuestions={questions.length}
-                  category={category.name}
+                  totalQuestions={quiz.questions.length}
+                  category={quiz.title}
+                  quizId={quiz.id} // Kirim quizId
+                  userId={parseInt(localStorage.getItem("userId"))} // Ambil userId dari localStorage
                 />
               ) : (
                 <QuestionDisplay
                   question={questions[currentQuestion]}
-                  category={category.name}
+                  category={quiz.title}
                   onAnswerClick={handleAnswerClick}
                   currentQuestionIndex={currentQuestion}
                   totalQuestions={questions.length}
@@ -100,7 +151,13 @@ export default function QuizContent() {
 }
 
 // Komponen untuk menampilkan skor
-function ScoreDisplay({ score, totalQuestions, category }) {
+function ScoreDisplay({ score, totalQuestions, category, quizId, userId }) {
+  const navigate = useNavigate();
+
+  const handleRetryQuiz = () => {
+    navigate("/"); // Navigasi kembali ke halaman utama
+  };
+
   const percentage = Math.round((score / totalQuestions) * 100);
   const getFeedback = () => {
     if (percentage === 100)
@@ -113,7 +170,7 @@ function ScoreDisplay({ score, totalQuestions, category }) {
 
   return (
     <div className="text-center">
-      <h1 className="display-6 fw-bold mb-4 ">Hasil Kuis {category}</h1>
+      <h1 className="display-6 fw-bold mb-4">Hasil Kuis {category}</h1>
       <div className="mb-4">
         <div
           className="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-3 shadow"
@@ -135,9 +192,9 @@ function ScoreDisplay({ score, totalQuestions, category }) {
       <p className="lead text-muted mb-4">{getFeedback()}</p>
       <button
         className="btn btn-primary btn-lg"
-        onClick={() => window.location.reload()}
+        onClick={handleRetryQuiz} // Panggil fungsi handleRetryQuiz saat tombol diklik
       >
-        Ulangi Kuis
+        Selesai
       </button>
     </div>
   );
@@ -151,6 +208,9 @@ function QuestionDisplay({
   totalQuestions,
   timer,
 }) {
+  // Parse options dari string JSON ke array
+  const options = JSON.parse(question.options);
+
   return (
     <div>
       {/* Progress Indicator */}
@@ -178,9 +238,9 @@ function QuestionDisplay({
 
       {/* Answer Options */}
       <div className="d-grid gap-3">
-        {question.options.map((option) => (
+        {options.map((option, index) => (
           <button
-            key={option}
+            key={index}
             onClick={() => onAnswerClick(option)}
             className="btn btn-outline shadow-sm btn-lg py-2 px-3 text-start"
           >

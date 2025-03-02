@@ -30,6 +30,7 @@ function LoginContent() {
 
       if (response.token) {
         localStorage.setItem("token", response.token);
+
         navigate("/");
       }
     } catch (error) {
