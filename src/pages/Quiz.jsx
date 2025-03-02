@@ -58,43 +58,47 @@ export default function QuizContent() {
   const questions = quiz.questions;
 
   const handleAnswerClick = async (selectedOption) => {
+    const currentQ = questions[currentQuestion];
+
+    // Cek apakah jawaban benar
+    const isCorrect = selectedOption === currentQ.correctAnswer;
+    if (isCorrect) {
+      setScore(score + 1);
+    }
+
+    // Simpan jawaban pengguna
     const newUserAnswers = [
       ...userAnswers,
-      {
-        questionId: questions[currentQuestion].id,
-        answer: selectedOption,
-      },
+      { questionId: currentQ.id, answer: selectedOption, isCorrect },
     ];
     setUserAnswers(newUserAnswers);
 
-    // Hitung skor
-    const isCorrect =
-      selectedOption === questions[currentQuestion].correctAnswer;
-    if (isCorrect) {
-      setScore((prevScore) => prevScore + 10); // Tambahkan 10 poin jika jawaban benar
-    }
+    // Cek apakah masih ada pertanyaan selanjutnya
+    if (currentQuestion + 1 < questions.length) {
+      setCurrentQuestion(currentQuestion + 1);
+      setTimer(60); // Reset timer untuk soal berikutnya
+    } else {
+      setShowScore(true); // Jika habis, tampilkan hasil kuis
 
-    setCurrentQuestion((prev) => prev + 1);
-    setTimer(60); // Reset timer for the next question
-
-    if (currentQuestion + 1 >= questions.length) {
-      setShowScore(true);
-
-      // Submit answers to backend
       try {
-        // Log data yang akan dikirim ke backend
         console.log("Data yang dikirim ke backend:", {
           quizId: parseInt(quiz.id),
           answers: newUserAnswers,
         });
 
         await service.questionSubmit({
-          quizId: parseInt(quiz.id), // Kirim quizId
-          answers: newUserAnswers, // Kirim jawaban pengguna
+          quizId: parseInt(quiz.id),
+          answers: newUserAnswers,
         });
       } catch (error) {
-        console.error("Error submitting quiz:", error);
-        alert("Gagal mengirim jawaban. Silakan coba lagi.");
+        console.error(
+          "Error submitting quiz:",
+          error.response?.data || error.message
+        );
+        alert(
+          "Gagal mengirim jawaban: " +
+            (error.response?.data?.message || error.message)
+        );
       }
     }
   };

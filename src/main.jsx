@@ -10,28 +10,9 @@ import CommingSoon from "./pages/CommingSoon.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
+import ProtectedRoute from "../src/pages/ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/about",
-    element: <AboutUs />,
-  },
-  {
-    path: "/leaderboard",
-    element: <Leaderboard />,
-  },
-  {
-    path: "/Quiz/:id",
-    element: <Quiz />,
-  },
-  {
-    path: "/materi",
-    element: <CommingSoon />,
-  },
   {
     path: "/login",
     element: <Login />,
@@ -41,12 +22,37 @@ const router = createBrowserRouter([
     element: <Register />,
   },
   {
-    path: "/comming",
-    element: <CommingSoon />,
-  },
-  {
-    path: "/Course",
-    element: <Course />,
+    element: <ProtectedRoute />, // Semua route di dalam ini membutuhkan login
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/about",
+        element: <AboutUs />,
+      },
+      {
+        path: "/leaderboard",
+        element: <Leaderboard />,
+      },
+      {
+        path: "/quiz/:id",
+        element: <Quiz />,
+      },
+      {
+        path: "/materi",
+        element: <CommingSoon />,
+      },
+      {
+        path: "/course",
+        element: <Course />,
+      },
+      {
+        path: "/comming",
+        element: <CommingSoon />,
+      },
+    ],
   },
 ]);
 
