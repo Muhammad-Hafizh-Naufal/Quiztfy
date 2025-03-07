@@ -11,6 +11,7 @@ import Quiz from "./pages/Quiz.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import ProtectedRoute from "../src/pages/ProtectedRoute.jsx";
+import Loading from "./components/Loading.jsx";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "/comming",
         element: <CommingSoon />,
+      },
+      {
+        path: "/loading",
+        element: <Loading show={Loading} />,
       },
     ],
   },

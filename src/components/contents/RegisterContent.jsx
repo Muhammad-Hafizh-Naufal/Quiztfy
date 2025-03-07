@@ -1,9 +1,12 @@
 import "../../../src/styles/Auth.css";
 import AuthImage from "/assets/auth.png";
 import { useState } from "react";
+import Loading from "../Loading";
 import service from "../../services/service";
+import { useNavigate } from "react-router-dom";
 
 function RegisterContent() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -11,6 +14,7 @@ function RegisterContent() {
   });
 
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,6 +22,7 @@ function RegisterContent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await service.register(formData);
       setMessage(response.message);
@@ -26,8 +31,12 @@ function RegisterContent() {
         email: "",
         password: "",
       });
+
+      navigate("/login");
     } catch (error) {
       setMessage(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -54,50 +63,54 @@ function RegisterContent() {
               </p>
               {message && <p className="alert alert-info">{message}</p>}
 
-              <form onSubmit={handleSubmit}>
-                <div className="form-group mb-3">
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    placeholder="FullName"
-                    className="form-control"
-                    required
-                  />
-                </div>
+              {loading ? (
+                <Loading show={loading} />
+              ) : (
+                <form onSubmit={handleSubmit}>
+                  <div className="form-group mb-3">
+                    <input
+                      type="text"
+                      name="fullName"
+                      value={formData.fullName}
+                      onChange={handleChange}
+                      placeholder="FullName"
+                      className="form-control"
+                      required
+                    />
+                  </div>
 
-                <div className="form-group mb-3">
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="Email"
-                    className="form-control"
-                    required
-                  />
-                </div>
+                  <div className="form-group mb-3">
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="Email"
+                      className="form-control"
+                      required
+                    />
+                  </div>
 
-                <div className="form-group mb-3">
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder="Password"
-                    className="form-control"
-                    required
-                  />
-                </div>
+                  <div className="form-group mb-3">
+                    <input
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="Password"
+                      className="form-control"
+                      required
+                    />
+                  </div>
 
-                <button
-                  className="d-flex justify-content-center mx-auto btn btn-primary"
-                  type="submit"
-                >
-                  Register
-                </button>
-              </form>
+                  <button
+                    className="d-flex justify-content-center mx-auto btn btn-primary"
+                    type="submit"
+                  >
+                    Register
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>

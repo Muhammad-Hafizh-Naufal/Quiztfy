@@ -4,6 +4,7 @@ import "../../../src/styles/Auth.css";
 import { useNavigate } from "react-router-dom";
 import service from "../../services/service";
 import { useState } from "react";
+import Loading from "../Loading";
 
 function LoginContent() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ function LoginContent() {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,6 +21,7 @@ function LoginContent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await service.login(formData);
       setMessage(response.message);
@@ -35,6 +38,8 @@ function LoginContent() {
       }
     } catch (error) {
       setMessage(error.response?.data?.message || "Failed to login");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,36 +64,40 @@ function LoginContent() {
                 Please enter your e-mail and password
               </p>
 
-              <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Control
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="Email"
-                    required
-                  />
-                </Form.Group>
+              {loading ? (
+                <Loading show={loading} />
+              ) : (
+                <Form onSubmit={handleSubmit}>
+                  <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Control
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="Email"
+                      required
+                    />
+                  </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder="Password"
-                    required
-                  />
-                </Form.Group>
+                  <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Control
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="Password"
+                      required
+                    />
+                  </Form.Group>
 
-                <Button
-                  className="d-flex justify-content-center mx-auto"
-                  type="submit"
-                >
-                  Login
-                </Button>
-              </Form>
+                  <Button
+                    className="d-flex justify-content-center mx-auto"
+                    type="submit"
+                  >
+                    Login
+                  </Button>
+                </Form>
+              )}
             </div>
           </div>
         </div>

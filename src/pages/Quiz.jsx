@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import service from "../services/service";
+import Loading from "../components/Loading";
 
 // Import styles
 import "../../src/App.css";
@@ -17,10 +18,12 @@ export default function QuizContent() {
   const [showScore, setShowScore] = useState(false);
   const [timer, setTimer] = useState(60); // Timer for each question
   const [userAnswers, setUserAnswers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
+        setLoading(true);
         const data = await service.getQuizById(id);
         // Parse options untuk setiap pertanyaan
         const parsedQuestions = data.questions.map((question) => ({
@@ -30,6 +33,8 @@ export default function QuizContent() {
         setQuiz({ ...data, questions: parsedQuestions });
       } catch (error) {
         console.error("Error fetching quiz:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -44,6 +49,10 @@ export default function QuizContent() {
       handleAnswerClick(null);
     }
   }, [timer, showScore]);
+
+  if (loading) {
+    return <Loading show={loading} />;
+  }
 
   if (!quiz) {
     return (
