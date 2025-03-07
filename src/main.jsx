@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Home from "./pages/Home.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
-import Leaderboard from "./pages/Team.jsx";
+import Leaderboard from "./pages/Leaderboard.jsx";
 import Course from "./pages/Course.jsx";
 import CommingSoon from "./pages/CommingSoon.jsx";
 import Quiz from "./pages/Quiz.jsx";
