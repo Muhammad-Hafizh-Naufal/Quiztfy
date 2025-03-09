@@ -3,7 +3,7 @@ import AuthImage from "/assets/auth.png";
 import { useState } from "react";
 import Loading from "../Loading";
 import service from "../../services/service";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function RegisterContent() {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ function RegisterContent() {
   };
 
   return (
-    <div className="auth-page bg-white">
+    <div className="auth-page bg-white vh-100">
       <div className="container mt-5">
         <div className="row align-items-center auth-container">
           {/* Gambar */}
@@ -109,6 +109,12 @@ function RegisterContent() {
                   >
                     Register
                   </button>
+                  <p className="text-center m-3">
+                    Already have an account?{" "}
+                    <Link className="text-dark fw-bold" to="/login">
+                      Login
+                    </Link>
+                  </p>
                 </form>
               )}
             </div>

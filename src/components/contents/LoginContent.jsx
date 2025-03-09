@@ -1,7 +1,7 @@
 import { Form, Button, Container } from "react-bootstrap";
 import AuthImage from "/assets/auth.png";
 import "../../../src/styles/Auth.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import service from "../../services/service";
 import { useState } from "react";
 import Loading from "../Loading";
@@ -44,7 +44,7 @@ function LoginContent() {
   };
 
   return (
-    <div className="auth-page bg-white">
+    <div className="auth-page bg-white vh-100">
       <Container className="mt-5">
         <div className="row align-items-center auth-container">
           <div className="col auth-image">
@@ -96,6 +96,12 @@ function LoginContent() {
                   >
                     Login
                   </Button>
+                  <p className="text-center m-3 ">
+                    Already have an account?{" "}
+                    <Link className="text-dark fw-bold" to="/register">
+                      register
+                    </Link>
+                  </p>
                 </Form>
               )}
             </div>
