@@ -18,19 +18,19 @@ export default function Leaderboard() {
   }, []);
 
   return (
-    <div className="container min-vh-100 py-5 d-flex flex-column align-items-center">
+    <div className=" min-vh-100 py-5 d-flex flex-column align-items-center">
       <h1 className="text-center mb-4 fw-bold text-primary">
         🏆 Leaderboard 🏆
       </h1>
       <div
-        className="table-responsive w-75 shadow-lg p-3 bg-white rounded"
+        className="table-responsive w-100 shadow-sm p-3 bg-white rounded"
         style={{ maxHeight: "500px", overflowY: "auto" }}
       >
         <table className="table table-hover text-center align-middle">
           <thead className="bg-primary text-white">
             <tr>
               <th className="py-3">No</th>
-              <th className="py-3">Nama</th>
+              <th className="py-3">Username</th>
               <th className="py-3">Score</th>
             </tr>
           </thead>
