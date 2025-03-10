@@ -1,6 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
 .full-page-bg {
   background-image: url("assets/BG.png");
   background-size: cover;
   background-position: bottom;
   background-repeat: no-repeat;
+}
+
+/* Animasi gradient untuk teks */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient-text {
+  background: linear-gradient(
+    45deg,
+    #6a11cb,
+    #2575fc,
+    #6a11cb,
+    #2575fc
+  ); /* Warna gradient */
+  background-size: 300% 300%; /* Ukuran background untuk animasi */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: gradientAnimation 5s ease infinite; /* Animasi gradient */
+}
+
+/* fonts */
+.fontG {
+  font-family: "Montserrat", sans-serif;
+}
+
+.fontsize {
+  font-size: 6rem;
 }
