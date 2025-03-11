@@ -44,3 +44,8 @@
 .fontsize {
   font-size: 6rem;
 }
+
+.nav-link.active {
+  border-bottom: 2px solid blue; /* Garis bawah berwarna biru */
+  font-weight: bold; /* Teks menjadi tebal */
+}

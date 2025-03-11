@@ -1,6 +1,6 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
@@ -79,25 +79,27 @@ export default function Navbar() {
             <div className="offcanvas-body align-items-center">
               <ul className="navbar-nav mx-auto fw-bold text-center nav-list">
                 <li className="nav-item">
-                  <Link to={"/"} className="nav-link position-relative px-3">
+                  <NavLink to={"/"} className="nav-link position-relative px-3">
                     <span className="position-relative">Home</span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <Link
+                  <NavLink
                     to={"/about"}
-                    className="nav-link position-relative px-3"
+                    className="nav-link position-relative px-3 nav-link-active"
+                    activeClassName="active"
+                    exact
                   >
                     <span className="position-relative">About Us</span>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <Link
+                  <NavLink
                     to={"/Leaderboard"}
                     className="nav-link position-relative px-3"
                   >
                     <span className="position-relative">Leaderboard</span>
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
 
