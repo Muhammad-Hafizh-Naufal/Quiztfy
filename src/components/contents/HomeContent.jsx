@@ -71,7 +71,7 @@ export default function Content() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
-          className=" d-flex flex-column flex-md-row align-items-center justify-content-center gap-md-5 text-center p-5 bg-dark mb-5  rounded container"
+          className=" d-flex flex-column flex-md-row align-items-center justify-content-center gap-md-5 text-center p-5 bg-dark mb-5  rounded container-xl"
         >
           <img src="../../assets/category/Materi.png" alt="" />
           <h1 className="fontG fw-bold py-5 display-3 animated-gradient-text">

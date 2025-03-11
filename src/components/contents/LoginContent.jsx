@@ -1,10 +1,11 @@
-import { Form, Button, Container } from "react-bootstrap";
-import AuthImage from "/assets/auth.png";
+import { Form, Button } from "react-bootstrap";
+// import AuthImage from "/assets/auth.png";
 import "../../../src/styles/Auth.css";
 import { useNavigate, Link } from "react-router-dom";
 import service from "../../services/service";
 import { useState } from "react";
 import Loading from "../Loading";
+import { motion } from "framer-motion";
 
 function LoginContent() {
   const navigate = useNavigate();
@@ -43,26 +44,143 @@ function LoginContent() {
     }
   };
 
+  // Animation
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  // Variasi animasi untuk scale
+  const scaleUp = {
+    hidden: { opacity: 0, scale: 0.8 },
+    show: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.8,
+        ease: "easeInOut",
+      },
+    },
+  };
+
   return (
     <div className="auth-page bg-white vh-100">
-      <Container className="mt-5">
+      <div className="mt-5 container">
         <div className="row align-items-center auth-container">
-          <div className="col auth-image">
-            <img
-              src={AuthImage}
-              alt="Login Illustration"
-              className="img-left"
-            />
-          </div>
+          {/* Carousel */}
+          <motion.div
+            id="carouselExampleAutoplaying"
+            className="carousel slide col d-none d-md-block"
+            data-bs-ride="carousel"
+            style={{ maxHeight: "400px", overflow: "hidden" }}
+            variants={fadeIn}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+          >
+            <div className="carousel-inner">
+              <div className="carousel-item active">
+                <img
+                  src="assets/Frame-1.png"
+                  className="d-block object-fit-cover"
+                  alt="..."
+                />
+              </div>
+              <div className="carousel-item">
+                <img
+                  src="assets/Frame-2.png"
+                  className="d-block object-fit-cover"
+                  alt="..."
+                />
+              </div>
+              <div className="carousel-item">
+                <img
+                  src="assets/Frame-3.png"
+                  className="d-block object-fit-cover"
+                  alt="..."
+                />
+              </div>
+            </div>
+            <button
+              className="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselExampleAutoplaying"
+              data-bs-slide="prev"
+            >
+              <span
+                className="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span className="visually-hidden">Previous</span>
+            </button>
+            <button
+              className="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExampleAutoplaying"
+              data-bs-slide="next"
+            >
+              <span
+                className="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span className="visually-hidden">Next</span>
+            </button>
+          </motion.div>
 
-          <div className="col auth-form">
+          {/* Form */}
+          <motion.div
+            className="col auth-form"
+            variants={scaleUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+          >
             <div className="p-4 content">
-              <h2 className="text-start">Welcome To Tech Quiztify</h2>
-              <p className="mb-4 text-start">Login your account</p>
-              {message && <p className="alert alert-info">{message}</p>}
-              <p className="text-start intruction">
+              <motion.h2
+                className="text-start"
+                variants={fadeIn}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+              >
+                Welcome To Tech Quiztify
+              </motion.h2>
+              <motion.p
+                className="mb-4 text-start"
+                variants={fadeIn}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+              >
+                Login your account
+              </motion.p>
+              {message && (
+                <motion.p
+                  className="alert alert-info"
+                  variants={fadeIn}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true }}
+                >
+                  {message}
+                </motion.p>
+              )}
+              <motion.p
+                className="text-start intruction"
+                variants={fadeIn}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+              >
                 Please enter your e-mail and password
-              </p>
+              </motion.p>
 
               {loading ? (
                 <Loading show={loading} />
@@ -96,18 +214,24 @@ function LoginContent() {
                   >
                     Login
                   </Button>
-                  <p className="text-center m-3 ">
+                  <motion.p
+                    className="text-center m-3"
+                    variants={fadeIn}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true }}
+                  >
                     Already have an account?{" "}
                     <Link className="text-dark fw-bold" to="/register">
                       register
                     </Link>
-                  </p>
+                  </motion.p>
                 </Form>
               )}
             </div>
-          </div>
+          </motion.div>
         </div>
-      </Container>
+      </div>
     </div>
   );
 }

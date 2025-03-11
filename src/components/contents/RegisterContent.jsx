@@ -1,9 +1,9 @@
 import "../../../src/styles/Auth.css";
-import AuthImage from "/assets/auth.png";
 import { useState } from "react";
 import Loading from "../Loading";
 import service from "../../services/service";
 import { useNavigate, Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function RegisterContent() {
   const navigate = useNavigate();
@@ -40,21 +40,103 @@ function RegisterContent() {
     }
   };
 
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  // Variasi animasi untuk scale
+  const scaleUp = {
+    hidden: { opacity: 0, scale: 0.8 },
+    show: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.8,
+        ease: "easeInOut",
+      },
+    },
+  };
+
   return (
     <div className="auth-page bg-white vh-100">
       <div className="container mt-5">
         <div className="row align-items-center auth-container">
-          {/* Gambar */}
-          <div className="col auth-image">
-            <img
-              src={AuthImage}
-              alt="Register Illustration"
-              className="img-left"
-            />
-          </div>
+          {/* Carousel */}
+          <motion.div
+            id="carouselExampleAutoplaying"
+            className="carousel slide col d-none d-md-block"
+            data-bs-ride="carousel"
+            style={{ maxHeight: "400px", overflow: "hidden" }}
+            variants={fadeIn}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+          >
+            <div className="carousel-inner">
+              <div className="carousel-item active">
+                <img
+                  src="assets/Frame-1.png"
+                  className="d-block object-fit-cover"
+                  alt="..."
+                />
+              </div>
+              <div className="carousel-item">
+                <img
+                  src="assets/Frame-2.png"
+                  className="d-block object-fit-cover"
+                  alt="..."
+                />
+              </div>
+              <div className="carousel-item">
+                <img
+                  src="assets/Frame-3.png"
+                  className="d-block object-fit-cover"
+                  alt="..."
+                />
+              </div>
+            </div>
+            <button
+              className="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselExampleAutoplaying"
+              data-bs-slide="prev"
+            >
+              <span
+                className="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span className="visually-hidden">Previous</span>
+            </button>
+            <button
+              className="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExampleAutoplaying"
+              data-bs-slide="next"
+            >
+              <span
+                className="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span className="visually-hidden">Next</span>
+            </button>
+          </motion.div>
 
           {/* Form */}
-          <div className="col auth-form">
+          <motion.div
+            variants={scaleUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="col auth-form"
+          >
             <div className="p-4 content">
               <h2 className="text-start">Welcome To Tech Quiztify</h2>
               <p className="mb-4 text-start">Register your account</p>
@@ -118,7 +200,7 @@ function RegisterContent() {
                 </form>
               )}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>
