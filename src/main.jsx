@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import Test from "./pages/test.jsx";
 import Home from "./pages/Home.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
 import Leaderboard from "./pages/Leaderboard.jsx";
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     element: <ProtectedRoute />, // Semua route di dalam ini membutuhkan login
     children: [
+      {
+        path: "/test",
+        element: <Test />,
+      },
       {
         path: "/",
         element: <Home />,

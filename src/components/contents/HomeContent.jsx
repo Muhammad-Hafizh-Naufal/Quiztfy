@@ -109,29 +109,29 @@ export default function Content() {
                 key={index}
                 className="col-12 col-md-6 col-lg-3 mb-4"
               >
-                <div className="card h-100 rounded-4 border-0 shadow-sm">
-                  <div className="text-center bg-light p-4 rounded-top-4">
-                    <img
-                      src={category.img}
-                      className="card-img-top"
-                      alt={`${category.name} Icon`}
-                      style={{ maxWidth: "120px" }}
-                    />
+                <Link
+                  onClick={() => handleStartQuiz(category.id)}
+                  className="text-decoration-none text-dark"
+                >
+                  <div className="card h-100 rounded-4 border-0 shadow-sm">
+                    <div className="text-center bg-light p-4 rounded-top-4">
+                      <img
+                        src={category.img}
+                        className="card-img-top"
+                        alt={`${category.name} Icon`}
+                        style={{ maxWidth: "120px" }}
+                      />
+                    </div>
+                    <div className="card-body">
+                      <h5 className="card-title fw-semibold mb-3">
+                        <h4>{category.title}</h4>
+                      </h5>
+                      <p className="card-text text-muted">
+                        {category.description}
+                      </p>
+                    </div>
                   </div>
-                  <div className="card-body">
-                    <h5 className="card-title fw-semibold mb-3">
-                      <Link
-                        onClick={() => handleStartQuiz(category.id)}
-                        className="text-decoration-none text-dark"
-                      >
-                        {category.title}
-                      </Link>
-                    </h5>
-                    <p className="card-text text-muted">
-                      {category.description}
-                    </p>
-                  </div>
-                </div>
+                </Link>
               </motion.div>
             ))}
           </motion.div>
