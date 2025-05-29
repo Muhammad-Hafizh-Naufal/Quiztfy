@@ -1,13 +1,13 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import CategoryContent from "../components/contents/CategoryContent";
+import CourseCategory from "../components/contents/CourseCategory";
 
-export default function Category() {
+export default function Course() {
   return (
     <>
       <div>
         <Navbar />
-        <CategoryContent />
+        <CourseCategory />
         <Footer />
       </div>
     </>

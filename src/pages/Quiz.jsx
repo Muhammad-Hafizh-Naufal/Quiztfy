@@ -168,7 +168,7 @@ function ScoreDisplay({ score, totalQuestions, category, quizId, userId }) {
   const navigate = useNavigate();
 
   const handleRetryQuiz = () => {
-    navigate("/"); // Navigasi kembali ke halaman utama
+    navigate("/dashboard"); // Navigasi kembali ke halaman utama
   };
 
   const percentage = Math.round((score / totalQuestions) * 100);

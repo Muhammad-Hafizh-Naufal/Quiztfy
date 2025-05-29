@@ -35,7 +35,7 @@ function LoginContent() {
       if (response.token) {
         localStorage.setItem("token", response.token);
 
-        navigate("/");
+        navigate("/dashboard");
       }
     } catch (error) {
       setMessage(error.response?.data?.message || "Failed to login");

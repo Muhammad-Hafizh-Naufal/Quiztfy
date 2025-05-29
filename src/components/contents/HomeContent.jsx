@@ -5,7 +5,7 @@ import "../../../src/App.css";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-export default function Content() {
+export default function HomeContent() {
   const [course, setCourse] = useState([]);
   const [isDataFetched, setIsDataFetched] = useState(false);
 

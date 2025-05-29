@@ -1,8 +1,20 @@
 {
   "name": "quizz-app",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "homepage": "https://github.com/Muhammad-Hafizh-Naufal/Quiztfy#readme",
+  "bugs": {
+    "url": "https://github.com/Muhammad-Hafizh-Naufal/Quiztfy/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Muhammad-Hafizh-Naufal/Quiztfy.git"
+  },
+  "license": "ISC",
+  "author": "",
   "type": "module",
+  "main": "eslint.config.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,15 +22,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "axios": "^1.7.9",
+    "axios": "^1.9.0",
     "bootstrap": "^5.3.3",
-    "bootstrap-icons": "^1.11.3",
+    "bootstrap-icons": "^1.13.1",
     "lucide-react": "^0.462.0",
-    "motion": "^12.4.10",
-    "react": "^18.3.1",
+    "motion": "^12.15.0",
+    "react": "^19.1.0",
     "react-bootstrap": "^2.10.6",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.28.0"
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",

@@ -79,7 +79,10 @@ export default function Navbar() {
             <div className="offcanvas-body align-items-center">
               <ul className="navbar-nav mx-auto fw-bold text-center nav-list">
                 <li className="nav-item">
-                  <NavLink to={"/"} className="nav-link position-relative px-3">
+                  <NavLink
+                    to={"/dashboard"}
+                    className="nav-link position-relative px-3"
+                  >
                     <span className="position-relative">Home</span>
                   </NavLink>
                 </li>

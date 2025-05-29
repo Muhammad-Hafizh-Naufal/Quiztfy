@@ -2,7 +2,6 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Test from "./pages/test.jsx";
 import Home from "./pages/Home.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
 import Leaderboard from "./pages/Leaderboard.jsx";
@@ -13,8 +12,13 @@ import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import ProtectedRoute from "../src/pages/ProtectedRoute.jsx";
 import Loading from "./components/Loading.jsx";
+import Beranda from "./pages/Beranda.jsx";
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Beranda />,
+  },
   {
     path: "/login",
     element: <Login />,
@@ -27,11 +31,7 @@ const router = createBrowserRouter([
     element: <ProtectedRoute />, // Semua route di dalam ini membutuhkan login
     children: [
       {
-        path: "/test",
-        element: <Test />,
-      },
-      {
-        path: "/",
+        path: "/dashboard",
         element: <Home />,
       },
       {
