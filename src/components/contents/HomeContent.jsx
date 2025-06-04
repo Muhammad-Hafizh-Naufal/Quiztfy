@@ -11,14 +11,14 @@ export default function HomeContent() {
 
   const navigate = useNavigate();
 
-  const handleStartQuiz = (categoryName) => {
-    navigate(`/quiz/${categoryName}`);
+  const courseHandler = (id) => {
+    navigate(`/course/${id}`);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await service.getAllQuiz();
+        const data = await service.getAllMateri();
         setCourse(data);
         setIsDataFetched(true);
       } catch (error) {
@@ -44,11 +44,6 @@ export default function HomeContent() {
     hidden: { opacity: 0, y: 50 },
     show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
-
-  // const fadeIn = {
-  //   hidden: { opacity: 0 },
-  //   show: { opacity: 1, y: 0, transition: { duration: 1 } },
-  // };
 
   const fadeIn = {
     hidden: { opacity: 0, scale: 0.8 },
@@ -102,7 +97,7 @@ export default function HomeContent() {
             animate="show"
             className="d-flex flex-wrap justify-content-center gap-3"
           >
-            {course.map((category, index) => (
+            {course.map((materials, index) => (
               // Single Card
               <motion.div
                 variants={cardVariants}
@@ -110,24 +105,24 @@ export default function HomeContent() {
                 className="col-12 col-md-6 col-lg-3 mb-4"
               >
                 <Link
-                  onClick={() => handleStartQuiz(category.id)}
+                  onClick={() => courseHandler(materials.id)}
                   className="text-decoration-none text-dark"
                 >
                   <div className="card h-100 rounded-4 border-0 shadow-sm">
                     <div className="text-center bg-light p-4 rounded-top-4">
                       <img
-                        src={category.img}
+                        src={materials.imgUrl}
                         className="card-img-top"
-                        alt={`${category.name} Icon`}
+                        alt={`${materials.name} Icon`}
                         style={{ maxWidth: "120px" }}
                       />
                     </div>
                     <div className="card-body">
                       <h5 className="card-title fw-semibold mb-3">
-                        <h4>{category.title}</h4>
+                        <h4>{materials.title}</h4>
                       </h5>
                       <p className="card-text text-muted">
-                        {category.description}
+                        {materials.content}
                       </p>
                     </div>
                   </div>

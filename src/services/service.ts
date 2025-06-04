@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "https://quizz-be.vercel.app/api";
+const API = "http://localhost:3000/api";
 
 // leaderboard
 const leaderboard = async () => {
@@ -35,7 +35,6 @@ const login = async (formData) => {
 
 // quiz
 
-// getAllQuiz
 const getAllQuiz = async () => {
   try {
     const response = await axios.get(`${API}/quiz`);
@@ -46,7 +45,6 @@ const getAllQuiz = async () => {
   }
 };
 
-// get quiz by name/id
 const getQuizById = async (id) => {
   try {
     const token = localStorage.getItem("token");
@@ -66,8 +64,6 @@ const getQuizById = async (id) => {
     throw err; // Lempar error agar bisa ditangani oleh komponen
   }
 };
-
-// question Submit
 
 const questionSubmit = async (formData) => {
   try {
@@ -89,6 +85,36 @@ const questionSubmit = async (formData) => {
   }
 };
 
+// materi
+const getAllMateri = async () => {
+  try {
+    const response = await axios.get(`${API}/material`);
+    return response.data;
+  } catch (error) {
+    const err = error as Error;
+    console.log(err.message);
+  }
+};
+
+const getMateriById = async (id) => {
+  try {
+    const response = await axios.get(`${API}/material/${id}`);
+    return response.data;
+  } catch (error) {
+    const err = error as Error;
+    console.log(err.message);
+  }
+};
+const getSectionsByMaterialId = async (materialId) => {
+  try {
+    const response = await axios.get(`${API}/material/${materialId}`);
+    return response.data.sections; // pastikan backend mengembalikan `sections`
+  } catch (error) {
+    console.error("Error fetching material sections:", error);
+    return [];
+  }
+};
+
 export default {
   leaderboard,
   register,
@@ -96,4 +122,9 @@ export default {
   getAllQuiz,
   getQuizById,
   questionSubmit,
+
+  // materi
+  getAllMateri,
+  getMateriById,
+  getSectionsByMaterialId,
 };

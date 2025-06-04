@@ -1,0 +1,247 @@
+/* CourseContent.css */
+
+/* Variabel Warna (opsional, untuk konsistensi) */
+:root {
+  --primary-color: #007bff; /* Biru Bootstrap sebagai contoh */
+  --primary-hover-color: #ffc107;
+  --light-bg: #f8f9fa;
+  --text-color: #333;
+  --muted-text-color: #6c757d;
+  --border-color: #dee2e6;
+  --active-bg: #e9ecef; /* Warna latar belakang untuk item aktif di sidebar */
+  --active-border: var(--primary-color);
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Font yang lebih modern */
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.course-content-page {
+  /* Memastikan container-fluid mengambil seluruh tinggi jika kontennya pendek */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tombol Toggle Sidebar */
+.sidebar-toggle-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  text-align: left;
+  cursor: pointer;
+  width: 100%; /* Agar memenuhi lebar di mobile */
+  display: flex; /* Untuk alignment ikon dan teks */
+  align-items: center;
+  z-index: 1050; /* Di atas sidebar */
+  position: sticky; /* Agar tetap terlihat saat scroll */
+  top: 0;
+}
+
+.sidebar-toggle-button:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.hamburger-icon {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.hamburger-icon span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: white;
+  margin: 4px 0;
+  transition: 0.3s;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  transition: transform 0.3s ease-in-out;
+  height: 100vh; /* Pastikan sidebar selalu setinggi viewport */
+  overflow-y: auto; /* Scroll jika konten sidebar panjang */
+  position: sticky; /* Agar sidebar tetap di tempat saat konten utama di-scroll */
+  top: 0; /* Menempel di bagian atas */
+}
+
+.sidebar-title {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.sidebar .list-group-item {
+  border: none; /* Hapus border default */
+  border-radius: 0.25rem; /* Sedikit lengkungan */
+  margin-bottom: 5px; /* Spasi antar item */
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar .list-group-item:hover {
+  background-color: var(--active-bg);
+  color: var(--primary-color);
+}
+
+.sidebar .list-group-item.active-section {
+  /* Style untuk section yang aktif */
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  border-left: 4px solid var(--primary-hover-color); /* Aksen di kiri */
+}
+
+/* Main Content Area Styling */
+.main-content-area {
+  padding-top: 2rem; /* Beri ruang lebih di atas */
+}
+
+.main-title {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+/* Styling untuk konten dari renderStructuredContent */
+.structured-heading-3 {
+  font-size: 1.75rem;
+  color: var(--primary-color);
+  font-weight: 500;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+.structured-heading-4 {
+  font-size: 1.4rem;
+  color: #555; /* Sedikit lebih gelap dari teks biasa */
+  font-weight: 500;
+}
+
+.structured-paragraph {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-color);
+  text-align: left; /* Lebih baik untuk keterbacaan di web daripada justify */
+}
+
+.structured-list {
+  padding-left: 2rem; /* Pastikan indentasi cukup */
+}
+
+.structured-list li {
+  margin-bottom: 0.5rem;
+}
+
+/* Images Area */
+/* Images Area */
+.images-area {
+  background-color: #f9f9f9; /* Latar belakang lembut untuk area gambar */
+  padding: 1.5rem;
+  border-radius: 0.25rem;
+  margin-top: 2rem; /* Beri jarak dari konten teks di atasnya */
+}
+
+.images-title {
+  color: var(--primary-color);
+  font-weight: 500;
+  margin-bottom: 1.5rem; /* Jarak ke baris gambar pertama */
+}
+
+.image-container {
+  /* === PENYESUAIAN UTAMA DI SINI === */
+  /* Naikkan nilai max-width ini sesuai keinginan Anda.
+     Semakin besar nilainya, semakin besar gambar akan ditampilkan.
+     Jika ada beberapa gambar, mereka akan tetap responsif dan mengisi baris. */
+  max-width: 450px; /* CONTOH: Dinaikkan dari 250px. Anda bisa coba nilai lain seperti 500px, 600px, atau bahkan persentase seperti 80% */
+
+  margin: 0.75rem !important; /* Sedikit perbesar margin antar gambar jika perlu */
+
+  /* Properti flex ini membantu gambar beradaptasi jika ada ruang lebih atau kurang dalam satu baris */
+  flex-grow: 1;
+  flex-basis: 300px; /* Ukuran dasar sebelum gambar membesar atau mengecil dalam baris */
+
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Memastikan gambar terpusat di dalam containernya */
+  background-color: #fff; /* Latar belakang putih untuk setiap kontainer gambar */
+  padding: 0.5rem; /* Padding di dalam kontainer gambar */
+  border-radius: 0.3rem; /* Lengkungan untuk kontainer gambar */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Shadow yang sangat halus untuk kontainer */
+}
+
+.course-image {
+  width: 100%; /* Gambar akan mengisi lebar .image-container */
+  height: auto; /* Tinggi akan menyesuaikan untuk menjaga aspek rasio */
+  max-height: 600px; /* Opsional: Batasi tinggi maksimum gambar jika perlu, agar tidak terlalu memanjang */
+
+  border-radius: 0.2rem; /* Lengkungan untuk gambar itu sendiri */
+  border: 1px solid var(--border-color);
+
+  /* Menggunakan 'contain' akan memastikan seluruh gambar terlihat tanpa cropping,
+     gambar akan diskalakan agar pas di dalam area yang tersedia.
+     Jika Anda lebih suka gambar mengisi penuh area dan rela ada bagian yang terpotong
+     agar tidak ada ruang kosong, Anda bisa ganti kembali ke 'cover'
+     dan mungkin perlu mengatur tinggi eksplisit pada .image-container atau .course-image. */
+  object-fit: contain;
+
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.course-image:hover {
+  transform: scale(1.03); /* Sedikit efek zoom saat hover */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Shadow lebih jelas saat hover */
+}
+
+/* Placeholder Content */
+.placeholder-content {
+  text-align: center;
+}
+.placeholder-content h3 {
+  font-weight: 400;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767.98px) {
+  /* md breakpoint Bootstrap */
+  .sidebar {
+    position: fixed; /* Agar bisa overlay */
+    top: 0;
+    left: 0;
+    width: 280px; /* Lebar sidebar mobile */
+    transform: translateX(-100%); /* Sembunyikan di luar layar */
+    z-index: 1040; /* Di bawah tombol toggle tapi di atas konten */
+    height: 100vh;
+    padding-top: 60px; /* Ruang untuk tombol toggle jika tombolnya fixed di atas sidebar */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-content-area {
+    /* Ketika sidebar terbuka, konten utama bisa diberi overlay gelap atau digeser */
+    /* Untuk kesederhanaan, kita tidak menggeser konten utama di contoh ini */
+  }
+
+  .sidebar-toggle-button {
+    position: sticky; /* Pastikan tombol selalu terlihat di atas */
+    top: 0;
+    z-index: 1050; /* Di atas sidebar */
+  }
+
+  /* Jika ingin ada overlay saat sidebar terbuka */
+  /* .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1030;
+    display: none;
+  }
+  .sidebar.open ~ .overlay {
+    display: block;
+  } */
+}

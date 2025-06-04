@@ -2,22 +2,30 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Home from "./pages/Home.jsx";
+import Home from "./pages/Dashboard.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
 import Leaderboard from "./pages/Leaderboard.jsx";
 import Course from "./pages/Course.jsx";
 import CommingSoon from "./pages/CommingSoon.jsx";
-import Quiz from "./pages/Quiz.jsx";
+// import Quiz from "./pages/Quiz.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import ProtectedRoute from "../src/pages/ProtectedRoute.jsx";
 import Loading from "./components/Loading.jsx";
 import Beranda from "./pages/Beranda.jsx";
+import CourseSection from "./pages/CourseSection.jsx";
+
+import HalamanKuis from "./pages/HalamanKuis.jsx";
+import Review from "./pages/Review.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Beranda />,
+  },
+  {
+    path: "/about",
+    element: <AboutUs />,
   },
   {
     path: "/login",
@@ -28,6 +36,23 @@ const router = createBrowserRouter([
     element: <Register />,
   },
   {
+    path: "/materi/:materialId",
+    element: <CourseSection />,
+  },
+  {
+    path: "/loading",
+    element: <Loading show={Loading} />,
+  },
+  {
+    path: "/kuis",
+    element: <HalamanKuis />,
+  },
+  {
+    path: "/review",
+    element: <Review />,
+  },
+
+  {
     element: <ProtectedRoute />, // Semua route di dalam ini membutuhkan login
     children: [
       {
@@ -35,32 +60,24 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/about",
-        element: <AboutUs />,
-      },
-      {
         path: "/leaderboard",
         element: <Leaderboard />,
       },
-      {
-        path: "/quiz/:id",
-        element: <Quiz />,
-      },
+      // {
+      //   path: "/quiz/:id",
+      //   element: <Quiz />,
+      // },
       {
         path: "/materi",
         element: <CommingSoon />,
       },
       {
-        path: "/course",
+        path: "/course/:id",
         element: <Course />,
       },
       {
         path: "/comming",
         element: <CommingSoon />,
-      },
-      {
-        path: "/loading",
-        element: <Loading show={Loading} />,
       },
     ],
   },

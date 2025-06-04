@@ -22,7 +22,7 @@ export default function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("token"); // Hapus token dari localStorage
     setUser(null); // Reset state pengguna
-    navigate("/login"); // Arahkan pengguna ke halaman login
+    navigate("/"); // Arahkan pengguna ke halaman login
   };
 
   const isAuthPage =
@@ -111,7 +111,7 @@ export default function Navbar() {
                 <div className="d-flex align-items-center gap-3 justify-content-center">
                   <div className="dropdown">
                     <img
-                      width={55}
+                      width="35"
                       className="rounded-circle mx-md-2 text-center"
                       src="../assets/user.png"
                       alt=""
