@@ -2,34 +2,32 @@ import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import service from "../../services/service";
 import Loading from "../Loading";
-import "../../../src/App.css"; // Pastikan path ini benar
+import "../../../src/App.css";
 
 export default function CourseCategory() {
   const { id } = useParams();
   const [materi, setMateri] = useState(null);
   const [quiz, setQuiz] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchMateri = async () => {
       try {
-        // Simulasi penundaan untuk melihat efek loading
-        // await new Promise(resolve => setTimeout(resolve, 1500));
-        const data = await service.getMateriById(id); // Pastikan fungsi ini ada di service Anda
+        const data = await service.getMateriById(id);
         setMateri(data);
         setQuiz(data.quiz);
       } catch (error) {
         console.error("Error fetching materi:", error);
-        // Anda mungkin ingin menampilkan pesan error di UI juga
-        setMateri(false); // Set ke false atau state error khusus untuk menangani UI error
+        setError("Gagal memuat data materi");
+        setMateri(false);
       }
     };
 
     fetchMateri();
   }, [id]);
 
-  // Bagian Loading dengan animasi dan min-vh-100
+  // Loading state
   if (materi === null) {
-    // materi masih null, artinya sedang loading
     return (
       <div className="min-vh-100 full-page-bg d-flex flex-column justify-content-center align-items-center">
         <Loading show={true} />
@@ -37,23 +35,26 @@ export default function CourseCategory() {
     );
   }
 
-  // Bagian jika terjadi error saat fetch data (opsional, tergantung bagaimana Anda ingin menangani error)
+  // Error state
   if (materi === false) {
     return (
       <div className="min-vh-100 full-page-bg d-flex flex-column justify-content-center align-items-center">
-        <p className="text-center my-5 text-danger">
-          Gagal memuat materi. Silakan coba lagi nanti.
-        </p>
-        <Link to="/dashboard" className="btn btn-warning">
-          Kembali ke Dashboard
-        </Link>
+        <div className="text-center">
+          <div className="alert alert-danger">
+            <h4>Oops! Terjadi Kesalahan</h4>
+            <p>{error || "Gagal memuat materi. Silakan coba lagi nanti."}</p>
+          </div>
+          <Link to="/dashboard" className="btn btn-warning">
+            Kembali ke Dashboard
+          </Link>
+        </div>
       </div>
     );
   }
 
-  // Bagian Konten Utama setelah data dimuat
   return (
     <div className="min-vh-100 full-page-bg">
+      {/* Header dengan tombol kembali */}
       <div className="d-flex text-center p-5 align-items-center justify-content-center position-relative">
         <Link
           className="p-2 d-none d-md-block position-absolute top-0 start-0 ms-4 mt-3"
@@ -72,14 +73,15 @@ export default function CourseCategory() {
         <h1 className="mx-auto">{materi.title}</h1>
       </div>
 
+      {/* Konten utama */}
       <section className="container my-5">
         <div className="row justify-content-center g-4">
           {/* Card Materi */}
           <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card h-100 rounded-4 border-0 shadow-sm">
+            <div className="card h-100 rounded-4 border-0 shadow-sm hover-lift">
               <div className="text-center p-4">
                 <img
-                  src="/assets/category/Materi.png" // Pastikan path ini benar
+                  src="/assets/category/Materi.png"
                   className="img-fluid"
                   alt="Materi Icon"
                   style={{ maxWidth: "120px" }}
@@ -89,7 +91,7 @@ export default function CourseCategory() {
                 <h5 className="card-title text-center fw-semibold mb-3">
                   <Link
                     to={`/materi/${id}`}
-                    className="text-decoration-none text-dark"
+                    className="text-decoration-none text-dark stretched-link"
                   >
                     Materi
                   </Link>
@@ -103,10 +105,14 @@ export default function CourseCategory() {
 
           {/* Card Quiz */}
           <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card h-100 rounded-4 border-0 shadow-sm">
+            <div
+              className={`card h-100 rounded-4 border-0 shadow-sm ${
+                quiz ? "hover-lift" : "opacity-75"
+              }`}
+            >
               <div className="text-center p-4">
                 <img
-                  src="/assets/category/Quiz.png" // Pastikan path ini benar
+                  src="/assets/category/Quiz.png"
                   className="img-fluid"
                   alt="Quiz Icon"
                   style={{ maxWidth: "120px" }}
@@ -114,25 +120,56 @@ export default function CourseCategory() {
               </div>
               <div className="card-body">
                 <h5 className="card-title text-center fw-semibold mb-3">
-                  <Link
-                    // Pastikan quiz tidak null sebelum mengakses id-nya
-                    to={quiz ? `/quiz/${quiz.id}` : "#"}
-                    className={`text-decoration-none ${
-                      quiz ? "text-dark" : "text-muted pe-none"
-                    }`} // nonaktifkan link jika quiz tidak ada
-                    aria-disabled={!quiz}
-                    tabIndex={!quiz ? -1 : undefined}
-                  >
-                    Quiz
-                  </Link>
+                  {quiz ? (
+                    <Link
+                      to={`/kuis/${quiz.id}`}
+                      className="text-decoration-none text-dark stretched-link"
+                    >
+                      Quiz
+                    </Link>
+                  ) : (
+                    <span className="text-muted">Quiz</span>
+                  )}
                 </h5>
                 <p className="card-text text-center text-muted">
                   {quiz?.description || "Quiz belum tersedia."}
                 </p>
+                {quiz && (
+                  <div className="text-center">
+                    <small className="text-success">
+                      <i className="bi bi-check-circle me-1"></i>
+                      {quiz.questions?.length || 0} Pertanyaan
+                    </small>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
+
+        {/* Info tambahan jika quiz tersedia */}
+        {quiz && (
+          <div className="row justify-content-center mt-4">
+            <div className="col-lg-8">
+              <div className="alert alert-info">
+                <h5 className="alert-heading">
+                  <i className="bi bi-info-circle me-2"></i>
+                  Tentang Quiz: {quiz.title}
+                </h5>
+                <p className="mb-2">{quiz.description}</p>
+                <hr />
+                <p className="mb-0">
+                  <strong>Jumlah Pertanyaan:</strong>{" "}
+                  {quiz.questions?.length || 0} soal
+                  <br />
+                  <strong>Waktu per Pertanyaan:</strong> 30 detik
+                  <br />
+                  <strong>Passing Score:</strong> 60%
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );

@@ -1,3 +1,4 @@
+// 4. Updated main.jsx - Perbaikan routing
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -7,13 +8,13 @@ import AboutUs from "./pages/AboutUs.jsx";
 import Leaderboard from "./pages/Leaderboard.jsx";
 import Course from "./pages/Course.jsx";
 import CommingSoon from "./pages/CommingSoon.jsx";
-// import Quiz from "./pages/Quiz.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import ProtectedRoute from "../src/pages/ProtectedRoute.jsx";
 import Loading from "./components/Loading.jsx";
 import Beranda from "./pages/Beranda.jsx";
 import CourseSection from "./pages/CourseSection.jsx";
+// import CourseCategory from "./pages/CourseCategory.jsx"; // Import the CourseCategory component
 
 import HalamanKuis from "./pages/HalamanKuis.jsx";
 import Review from "./pages/Review.jsx";
@@ -41,19 +42,18 @@ const router = createBrowserRouter([
   },
   {
     path: "/loading",
-    element: <Loading show={Loading} />,
+    element: <Loading show={true} />,
   },
   {
-    path: "/kuis",
+    path: "/kuis/:id",
     element: <HalamanKuis />,
   },
   {
     path: "/review",
     element: <Review />,
   },
-
   {
-    element: <ProtectedRoute />, // Semua route di dalam ini membutuhkan login
+    element: <ProtectedRoute />,
     children: [
       {
         path: "/dashboard",
@@ -63,16 +63,12 @@ const router = createBrowserRouter([
         path: "/leaderboard",
         element: <Leaderboard />,
       },
-      // {
-      //   path: "/quiz/:id",
-      //   element: <Quiz />,
-      // },
       {
         path: "/materi",
         element: <CommingSoon />,
       },
       {
-        path: "/course/:id",
+        path: "/course/:id", // This shows the CourseCategory (materi + quiz options)
         element: <Course />,
       },
       {

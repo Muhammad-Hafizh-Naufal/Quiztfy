@@ -173,8 +173,6 @@ export default function CourseContent() {
     }
     return (
       <div className="placeholder-content text-center text-muted">
-        {/* Anda bisa menambahkan ikon atau ilustrasi di sini */}
-        {/* <i className="bi bi-journal-text display-1 mb-3"></i> */}
         <h4>Pilih Bagian Konten</h4>
         <p>
           Silakan pilih salah satu bagian dari menu di samping untuk memulai.
@@ -185,19 +183,9 @@ export default function CourseContent() {
 
   // Render utama komponen
   if (isLoading) {
-    // Pastikan komponen Loading Anda bisa menerima prop 'show' atau sejenisnya,
-    // atau dirancang sebagai overlay yang menutupi layar.
-    // Jika Loading adalah overlay, Anda mungkin tidak perlu return di sini dan bisa menampilkannya secara kondisional di JSX utama.
-    // Untuk contoh ini, kita anggap Loading adalah komponen yang mengisi halaman.
     return (
       <div className="course-content-page container-fluid min-vh-100 d-flex justify-content-center align-items-center">
         <Loading />
-        {/* Atau jika Loading adalah komponen kecil:
-        <div>
-          <Loading />
-          <p>Memuat Konten...</p>
-        </div>
-        */}
       </div>
     );
   }
