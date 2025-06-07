@@ -15,6 +15,7 @@ import Loading from "./components/Loading.jsx";
 import Beranda from "./pages/Beranda.jsx";
 import CourseSection from "./pages/CourseSection.jsx";
 // import CourseCategory from "./pages/CourseCategory.jsx"; // Import the CourseCategory component
+import Test from "./pages/Test.jsx";
 
 import HalamanKuis from "./pages/HalamanKuis.jsx";
 import Review from "./pages/Review.jsx";
@@ -45,12 +46,16 @@ const router = createBrowserRouter([
     element: <Loading show={true} />,
   },
   {
-    path: "/kuis/:id",
+    path: "/kuis/:quizId",
     element: <HalamanKuis />,
   },
   {
     path: "/review",
     element: <Review />,
+  },
+  {
+    path: "/test/:quizId",
+    element: <Test />,
   },
   {
     element: <ProtectedRoute />,

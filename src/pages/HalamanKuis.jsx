@@ -1,22 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import {
-  Card,
-  Button,
-  Badge,
-  ProgressBar,
-  Modal,
-  ListGroup,
-  Alert,
-} from "react-bootstrap";
-import Loading from "../components/Loading";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import service, { dummyQuizData } from "../services/service";
+import { Card, Button, Alert, Modal } from "react-bootstrap";
+import Loading from "../components/Loading"; // Pastikan komponen ini ada
+import Navbar from "../components/Navbar"; // Pastikan komponen ini ada
+import Footer from "../components/Footer"; // Pastikan komponen ini ada
+import service from "../services/service"; // Pastikan service ini benar
 
-export default function HalamanKuis() {
-  const { id } = useParams();
+export default function HalamanKuisGabungan() {
+  const { quizId } = useParams();
   const navigate = useNavigate();
+
+  // State untuk mengelola data dan UI kuis
   const [quiz, setQuiz] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
@@ -27,143 +21,135 @@ export default function HalamanKuis() {
   const [showReview, setShowReview] = useState(false);
   const [timer, setTimer] = useState(30);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [quizStarted, setQuizStarted] = useState(false);
 
+  // Mengambil data kuis saat komponen dimuat
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
         setLoading(true);
-        let data;
+        const data = await service.getQuizById(quizId);
 
-        try {
-          // Coba ambil dari API
-          data = await service.getQuizById(id);
-
-          // Format options jika masih berupa string JSON
-          if (data.quiz && data.quiz.questions) {
-            data.quiz.questions = data.quiz.questions.map((q) => ({
-              ...q,
-              options: Array.isArray(q.options)
-                ? q.options
-                : JSON.parse(q.options || "[]"),
-            }));
-          }
-        } catch (apiError) {
-          console.warn(
-            "API not available, using dummy data:",
-            apiError.message
+        // Memastikan data kuis dan pertanyaan ada
+        if (!data || !data.questions || data.questions.length === 0) {
+          throw new Error(
+            "Kuis ini tidak memiliki pertanyaan atau data tidak valid."
           );
-          // Jika API gagal, gunakan data dummy
-          if (id == 1) {
-            data = dummyQuizData;
-          } else {
-            throw new Error("Quiz tidak ditemukan");
-          }
         }
 
-        if (
-          !data.quiz ||
-          !data.quiz.questions ||
-          data.quiz.questions.length === 0
-        ) {
-          throw new Error("Quiz tidak memiliki pertanyaan");
-        }
+        // Mem-parsing 'options' dari string JSON menjadi array
+        const processedQuestions = data.questions.map((q) => ({
+          ...q,
+          options: Array.isArray(q.options)
+            ? q.options
+            : JSON.parse(q.options || "[]"),
+        }));
 
-        setQuiz(data.quiz);
-      } catch (error) {
-        console.error("Error fetching quiz:", error);
-        setError(error.message || "Gagal memuat quiz");
+        setQuiz({ ...data, questions: processedQuestions });
+      } catch (err) {
+        console.error("Error fetching quiz:", err);
+        setError(err.message || "Gagal memuat kuis. Silakan coba lagi.");
       } finally {
         setLoading(false);
       }
     };
 
-    if (id) {
+    if (quizId) {
       fetchQuiz();
     }
-  }, [id]);
+  }, [quizId]);
 
-  // Timer effect - hanya jalan jika quiz sudah dimulai
+  // Mengelola timer untuk setiap pertanyaan
   useEffect(() => {
-    if (!showScore && quiz && timer > 0 && !selectedAnswer && quizStarted) {
-      const timerId = setInterval(() => setTimer((prev) => prev - 1), 1000);
-      return () => clearInterval(timerId);
-    } else if (timer === 0 && !selectedAnswer && quizStarted) {
-      handleAnswerSelect(null);
+    let timerId;
+    if (quizStarted && !showScore && timer > 0) {
+      timerId = setInterval(() => setTimer((prev) => prev - 1), 1000);
+    } else if (timer === 0) {
+      handleAnswerSelect(null); // Pindah ke pertanyaan selanjutnya jika waktu habis
     }
-  }, [timer, showScore, quiz, selectedAnswer, quizStarted]);
+    return () => clearInterval(timerId);
+  }, [timer, quizStarted, showScore]);
 
-  const handleAnswerSelect = async (selectedOption) => {
-    if (selectedAnswer !== null) return; // Prevent multiple selections
+  // Fungsi untuk memulai kuis
+  const handleStartQuiz = () => {
+    setQuizStarted(true);
+    setTimer(30); // Atur ulang timer saat kuis dimulai
+  };
+
+  // Fungsi yang dijalankan saat pengguna memilih jawaban
+  const handleAnswerSelect = (selectedOption) => {
+    if (selectedAnswer !== null) return; // Mencegah klik ganda
 
     setSelectedAnswer(selectedOption);
     const currentQ = quiz.questions[currentQuestion];
     const isCorrect = selectedOption === currentQ.correctAnswer;
 
-    // Simpan jawaban user
+    if (isCorrect) {
+      setScore(score + 1);
+    }
+
     const newAnswer = {
-      questionId: currentQ.id,
       question: currentQ.question,
       userAnswer: selectedOption,
       correctAnswer: currentQ.correctAnswer,
       isCorrect,
       explanation: currentQ.explanation,
-      timeRemaining: timer,
     };
-
     const updatedAnswers = [...userAnswers, newAnswer];
     setUserAnswers(updatedAnswers);
 
-    if (isCorrect) {
-      setScore(score + 1);
-    }
-
-    // Delay sebelum pindah ke pertanyaan berikutnya
+    // Memberi jeda sebelum ke pertanyaan berikutnya
     setTimeout(() => {
       if (currentQuestion < quiz.questions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
-        setTimer(30);
-        setSelectedAnswer(null);
+        setTimer(30); // Reset timer
+        setSelectedAnswer(null); // Reset pilihan jawaban
       } else {
         setShowScore(true);
         submitQuizResult(updatedAnswers, isCorrect ? score + 1 : score);
       }
-    }, 1500);
+    }); // Jeda 1.5 detik
   };
 
-  const submitQuizResult = async (answers, finalScore) => {
+  // Mengirim hasil kuis ke server (opsional, tergantung backend)
+  const submitQuizResult = async (answers, score) => {
+    setIsSubmitting(true);
     try {
-      await service.submitQuizResult(quiz.id, answers, finalScore);
+      // Format answers to match backend expectation
+      const formattedAnswers = answers.map((ans, index) => ({
+        questionId: quiz.questions[index].id, // Use the question ID from the quiz data
+        answer: ans.userAnswer,
+      }));
+
+      await service.submitQuizResult(quizId, formattedAnswers, score);
       setQuizSubmitted(true);
     } catch (error) {
       console.error("Error submitting quiz result:", error);
-      // Still show results even if submission fails
+      setError("Gagal menyimpan hasil kuis. Silakan coba lagi.");
       setQuizSubmitted(false);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
+  // Mengatur ulang state untuk mengulang kuis
   const handleRetryQuiz = () => {
+    setQuizStarted(false);
+    setShowScore(false);
     setCurrentQuestion(0);
     setScore(0);
     setUserAnswers([]);
-    setShowScore(false);
-    setTimer(30);
-    setQuizSubmitted(false);
     setSelectedAnswer(null);
-    setQuizStarted(false); // Reset ke halaman instruksi
+    setQuizSubmitted(false);
   };
 
-  const handleStartQuiz = () => {
-    setQuizStarted(true);
-    setTimer(30);
-  };
+  // Menampilkan dan menyembunyikan modal review
+  const handleShowReview = () => setShowReview(true);
+  const handleCloseReview = () => setShowReview(false);
 
-  const handleShowReview = () => {
-    setShowReview(true);
-  };
-
-  // Loading state
+  // Tampilan Loading
   if (loading) {
     return (
       <div className="min-vh-100 d-flex align-items-center justify-content-center">
@@ -172,7 +158,7 @@ export default function HalamanKuis() {
     );
   }
 
-  // Error state
+  // Tampilan Error
   if (error) {
     return (
       <div className="min-vh-100 d-flex flex-column">
@@ -193,7 +179,7 @@ export default function HalamanKuis() {
     );
   }
 
-  // Quiz not found
+  // Jika quiz tidak ditemukan
   if (!quiz) {
     return (
       <div className="min-vh-100 d-flex flex-column">
@@ -201,8 +187,8 @@ export default function HalamanKuis() {
         <div className="container flex-grow-1 d-flex align-items-center justify-content-center">
           <div className="text-center">
             <Alert variant="warning">
-              <h4>Quiz Tidak Ditemukan</h4>
-              <p>Quiz yang Anda cari tidak tersedia.</p>
+              <h4>Kuis Tidak Ditemukan</h4>
+              <p>Maaf, kuis yang Anda cari tidak tersedia.</p>
             </Alert>
             <Button variant="primary" onClick={() => navigate("/dashboard")}>
               Kembali ke Dashboard
@@ -214,11 +200,11 @@ export default function HalamanKuis() {
     );
   }
 
+  // Tampilan Utama Kuis
   return (
     <div className="quiz-page min-vh-100 d-flex flex-column">
       <Navbar />
-
-      {/* Header */}
+      {/* Title Header */}
       <div className="d-flex text-center p-5 align-items-center justify-content-center position-relative">
         <Link
           to={`/course/${quiz.id}`}
@@ -237,29 +223,96 @@ export default function HalamanKuis() {
         <h1>{quiz.title}</h1>
       </div>
 
-      {/* Main Content */}
-      <div className="container flex-grow-1 pb-5">
+      <div className="container flex-grow-1 pb-5 min-vh-100">
         <Card className="shadow-lg border-0 rounded-4 overflow-hidden">
-          <Card.Body className="p-4">
+          <Card.Body className="p-sm-5 p-4">
             {showScore ? (
-              <ScoreDisplay
-                score={score}
-                totalQuestions={quiz.questions.length}
-                userAnswers={userAnswers}
-                onRetry={handleRetryQuiz}
-                onShowReview={handleShowReview}
-                quizSubmitted={quizSubmitted}
-                quizTitle={quiz.title}
-              />
+              // Tampilan Skor Akhir
+              <div className="text-center">
+                <h3>
+                  Skor Akhir Anda: {score} dari {quiz.questions.length}
+                </h3>
+                <p>
+                  {isSubmitting
+                    ? "Menyimpan Hasil Kuis..."
+                    : quizSubmitted
+                    ? "Hasil kuis berhasil disimpan."
+                    : "Gagal menyimpan hasil kuis."}
+                </p>
+                <Button
+                  variant="success"
+                  onClick={handleRetryQuiz}
+                  className="me-2 mt-2"
+                >
+                  Ulangi Kuis
+                </Button>
+                <Button
+                  variant="info"
+                  onClick={handleShowReview}
+                  className="mt-2"
+                >
+                  Lihat Jawaban
+                </Button>
+              </div>
+            ) : quizStarted ? (
+              // Tampilan Pertanyaan
+              <div>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h5 className="mb-0">
+                    Pertanyaan {currentQuestion + 1}/{quiz.questions.length}
+                  </h5>
+                  <span className="badge bg-danger rounded-pill fs-6">
+                    Sisa Waktu: {timer}s
+                  </span>
+                </div>
+                <h4 className="mb-4">
+                  {quiz.questions[currentQuestion].question}
+                </h4>
+                <div className="d-grid gap-2">
+                  {quiz.questions[currentQuestion].options.map((opt, idx) => {
+                    const isSelected = selectedAnswer === opt;
+                    let variant = "outline-secondary";
+                    if (selectedAnswer !== null) {
+                      if (
+                        opt === quiz.questions[currentQuestion].correctAnswer
+                      ) {
+                        variant = "success"; // Jawaban benar
+                      } else if (isSelected) {
+                        variant = "danger"; // Jawaban salah
+                      }
+                    }
+
+                    return (
+                      <Button
+                        key={idx}
+                        variant={variant}
+                        onClick={() => handleAnswerSelect(opt)}
+                        disabled={selectedAnswer !== null}
+                        size="lg"
+                        className="text-start"
+                      >
+                        {opt}
+                      </Button>
+                    );
+                  })}
+                </div>
+              </div>
             ) : (
-              <QuestionDisplay
-                question={quiz.questions[currentQuestion]}
-                currentQuestion={currentQuestion}
-                totalQuestions={quiz.questions.length}
-                timer={timer}
-                onAnswerSelect={handleAnswerSelect}
-                selectedAnswer={selectedAnswer}
-              />
+              // Tampilan Awal Kuis
+              <div className="text-center">
+                <img
+                  src={quiz.img}
+                  alt={quiz.title}
+                  className="img-fluid rounded mb-4"
+                  style={{ maxHeight: "300px" }}
+                />
+                <h4>Tentang Kuis Ini</h4>
+                <p>{quiz.description}</p>
+                <p>Jumlah Pertanyaan: {quiz.questions.length}</p>
+                <Button variant="primary" size="lg" onClick={handleStartQuiz}>
+                  Mulai Kuis
+                </Button>
+              </div>
             )}
           </Card.Body>
         </Card>
@@ -267,276 +320,46 @@ export default function HalamanKuis() {
 
       <Footer />
 
-      {/* Modal Review Jawaban */}
-      <ReviewModal
-        show={showReview}
-        onHide={() => setShowReview(false)}
-        userAnswers={userAnswers}
-        quizTitle={quiz.title}
-      />
-    </div>
-  );
-}
-
-// Component untuk menampilkan pertanyaan
-function QuestionDisplay({
-  question,
-  currentQuestion,
-  totalQuestions,
-  timer,
-  onAnswerSelect,
-  selectedAnswer,
-}) {
-  const getOptionStyle = (option) => {
-    if (selectedAnswer === null) return "";
-
-    if (option === question.correctAnswer) {
-      return "list-group-item-success border-success";
-    } else if (option === selectedAnswer && option !== question.correctAnswer) {
-      return "list-group-item-danger border-danger";
-    }
-
-    return "opacity-50";
-  };
-
-  return (
-    <div>
-      <ProgressBar
-        now={((currentQuestion + 1) / totalQuestions) * 100}
-        label={`${Math.round(((currentQuestion + 1) / totalQuestions) * 100)}%`}
-        className="mb-4"
-        variant={timer <= 10 ? "danger" : "primary"}
-      />
-
-      <div className="mb-4 text-center">
-        <h4 className="mb-3">{question.question}</h4>
-        <div className="d-flex justify-content-center gap-3">
-          <Badge bg="secondary">
-            Pertanyaan {currentQuestion + 1} dari {totalQuestions}
-          </Badge>
-          <Badge bg={timer <= 10 ? "danger" : "primary"}>
-            <i className="bi bi-clock me-1"></i>
-            {timer}s
-          </Badge>
-        </div>
-      </div>
-
-      <ListGroup className="gap-2">
-        {question.options.map((option, index) => (
-          <ListGroup.Item
-            key={index}
-            action={selectedAnswer === null}
-            onClick={() => selectedAnswer === null && onAnswerSelect(option)}
-            className={`py-3 rounded-3 ${getOptionStyle(option)} ${
-              selectedAnswer === null ? "cursor-pointer" : ""
-            }`}
-            style={{ cursor: selectedAnswer === null ? "pointer" : "default" }}
-          >
-            <div className="d-flex align-items-center">
-              <span className="me-3 fw-bold">
-                {String.fromCharCode(65 + index)}.
-              </span>
-              <span>{option}</span>
-              {selectedAnswer !== null && option === question.correctAnswer && (
-                <i className="bi bi-check-circle-fill text-success ms-auto"></i>
-              )}
-              {selectedAnswer === option &&
-                option !== question.correctAnswer && (
-                  <i className="bi bi-x-circle-fill text-danger ms-auto"></i>
+      {/* Modal untuk Review Jawaban */}
+      <Modal show={showReview} onHide={handleCloseReview} centered size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Review Jawaban</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ul className="list-group list-group-flush">
+            {userAnswers.map((ans, idx) => (
+              <li key={idx} className="list-group-item px-0">
+                <strong>
+                  P{idx + 1}: {ans.question}
+                </strong>
+                <p
+                  className={`mb-1 ${
+                    ans.isCorrect ? "text-success" : "text-danger"
+                  }`}
+                >
+                  Jawaban Anda: {ans.userAnswer || "Tidak dijawab"}{" "}
+                  {ans.isCorrect ? "✔" : "✖"}
+                </p>
+                {!ans.isCorrect && (
+                  <p className="mb-1 text-success">
+                    Kunci Jawaban: {ans.correctAnswer}
+                  </p>
                 )}
-            </div>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-
-      {selectedAnswer !== null && (
-        <div className="mt-3 text-center">
-          <small className="text-muted">Menuju pertanyaan berikutnya...</small>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// Component untuk menampilkan hasil
-function ScoreDisplay({
-  score,
-  totalQuestions,
-  userAnswers,
-  onRetry,
-  onShowReview,
-  quizSubmitted,
-  quizTitle,
-}) {
-  const navigate = useNavigate();
-  const percentage = Math.round((score / totalQuestions) * 100);
-
-  const getScoreColor = () => {
-    if (percentage >= 80) return "success";
-    if (percentage >= 60) return "warning";
-    return "danger";
-  };
-
-  const getScoreMessage = () => {
-    if (percentage === 100) return "Sempurna! 🎉";
-    if (percentage >= 80) return "Excellent! 👏";
-    if (percentage >= 60) return "Good Job! 👍";
-    return "Keep Learning! 📚";
-  };
-
-  return (
-    <div className="text-center">
-      <h1 className="display-6 fw-bold mb-4">Hasil Quiz</h1>
-      <h5 className="text-muted mb-4">{quizTitle}</h5>
-
-      <div className="mb-4">
-        <div
-          className={`mx-auto rounded-circle d-flex align-items-center justify-content-center mb-3 shadow bg-${getScoreColor()}`}
-          style={{ width: "150px", height: "150px" }}
-        >
-          <div>
-            <h2 className="h3 mb-0 text-white">
-              {score}/{totalQuestions}
-            </h2>
-            <p className="small mb-0 text-white">{percentage}%</p>
-          </div>
-        </div>
-      </div>
-
-      <p className="lead text-muted mb-4">{getScoreMessage()}</p>
-
-      {/* Statistics */}
-      <div className="row mb-4">
-        <div className="col-4">
-          <div className="text-center">
-            <h5 className="text-success">{score}</h5>
-            <small className="text-muted">Benar</small>
-          </div>
-        </div>
-        <div className="col-4">
-          <div className="text-center">
-            <h5 className="text-danger">{totalQuestions - score}</h5>
-            <small className="text-muted">Salah</small>
-          </div>
-        </div>
-        <div className="col-4">
-          <div className="text-center">
-            <h5 className="text-primary">{totalQuestions}</h5>
-            <small className="text-muted">Total</small>
-          </div>
-        </div>
-      </div>
-
-      {/* Action Buttons */}
-      <div className="d-flex justify-content-center gap-3 flex-wrap">
-        <Button
-          variant="primary"
-          size="lg"
-          onClick={() => navigate("/dashboard")}
-        >
-          <i className="bi bi-house-door me-2"></i>
-          Dashboard
-        </Button>
-        <Button variant="outline-primary" size="lg" onClick={onRetry}>
-          <i className="bi bi-arrow-clockwise me-2"></i>
-          Coba Lagi
-        </Button>
-        <Button variant="info" size="lg" onClick={onShowReview}>
-          <i className="bi bi-eye me-2"></i>
-          Review Jawaban
-        </Button>
-      </div>
-
-      {/* Submission Status */}
-      {quizSubmitted && (
-        <Alert variant="success" className="mt-4">
-          <i className="bi bi-check-circle me-2"></i>
-          Hasil quiz Anda telah tersimpan!
-        </Alert>
-      )}
-
-      {!quizSubmitted && (
-        <Alert variant="warning" className="mt-4">
-          <i className="bi bi-exclamation-triangle me-2"></i>
-          Hasil belum tersimpan. Periksa koneksi internet Anda.
-        </Alert>
-      )}
-    </div>
-  );
-}
-
-// Component Modal Review
-function ReviewModal({ show, onHide, userAnswers, quizTitle }) {
-  return (
-    <Modal show={show} onHide={onHide} size="lg" scrollable>
-      <Modal.Header closeButton>
-        <Modal.Title>
-          <i className="bi bi-eye me-2"></i>
-          Review Jawaban - {quizTitle}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        {userAnswers.map((answer, index) => (
-          <div key={index} className="mb-4 border-bottom pb-3">
-            <div className="d-flex justify-content-between align-items-start mb-2">
-              <h6 className="mb-0">Pertanyaan {index + 1}</h6>
-              <Badge
-                bg={answer.isCorrect ? "success" : "danger"}
-                className="ms-2"
-              >
-                {answer.isCorrect ? (
-                  <>
-                    <i className="bi bi-check-circle me-1"></i>
-                    Benar
-                  </>
-                ) : (
-                  <>
-                    <i className="bi bi-x-circle me-1"></i>
-                    Salah
-                  </>
+                {ans.explanation && (
+                  <p className="mb-0 text-muted fst-italic">
+                    Penjelasan: {ans.explanation}
+                  </p>
                 )}
-              </Badge>
-            </div>
-
-            <p className="mb-3">{answer.question}</p>
-
-            <div className="mb-2">
-              <strong>Jawaban Anda:</strong>{" "}
-              <span
-                className={answer.isCorrect ? "text-success" : "text-danger"}
-              >
-                {answer.userAnswer || "Tidak dijawab"}
-              </span>
-            </div>
-
-            <div className="mb-2">
-              <strong>Jawaban Benar:</strong>{" "}
-              <span className="text-success">{answer.correctAnswer}</span>
-            </div>
-
-            <div className="text-muted">
-              <small>
-                <i className="bi bi-info-circle me-1"></i>
-                {answer.explanation}
-              </small>
-            </div>
-
-            {answer.timeRemaining !== undefined && (
-              <div className="text-muted mt-2">
-                <small>
-                  <i className="bi bi-clock me-1"></i>
-                  Waktu tersisa: {answer.timeRemaining}s
-                </small>
-              </div>
-            )}
-          </div>
-        ))}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
-          Tutup
-        </Button>
-      </Modal.Footer>
-    </Modal>
+              </li>
+            ))}
+          </ul>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseReview}>
+            Tutup
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
   );
 }
