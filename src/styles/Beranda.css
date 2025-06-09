@@ -1,0 +1,32 @@
+/* Animasi teks gradient untuk judul */
+.animated-gradient-text {
+  background: linear-gradient(270deg, #f2a361, #fcd58b, #f2a361);
+  background-size: 600% 600%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientBG 8s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Hover effect card */
+.hover-card:hover {
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: scale(1.03);
+  transition: all 0.3s ease;
+}
+
+.todolist-img {
+  filter: drop-shadow(4px 4px 6px rgba(199, 0, 0, 0.3));
+}

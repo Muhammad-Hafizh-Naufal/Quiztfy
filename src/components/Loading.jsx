@@ -18,7 +18,7 @@ export default function Loading({ show }) {
         >
           <span className="visually-hidden">Loading...</span>
         </div>
-        <p className="mt-3 text-white">Memuat materi...</p>
+        <p className="mt-3 text-white">Loading...</p>
       </div>
     </Modal>
   );

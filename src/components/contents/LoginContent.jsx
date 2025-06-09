@@ -38,7 +38,17 @@ function LoginContent() {
         navigate("/dashboard");
       }
     } catch (error) {
-      setMessage(error.response?.data?.message || "Failed to login");
+      // setMessage(error.response?.data?.message || "Failed to login");
+      // Super safe error message handling
+      let errorMessage = "Registration failed. Please try again.";
+
+      if (error && typeof error === "object") {
+        if (error.message && typeof error.message === "string") {
+          errorMessage = error.message;
+        }
+      }
+
+      setMessage(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -71,9 +81,9 @@ function LoginContent() {
   };
 
   return (
-    <div className="auth-page bg-white vh-100">
-      <div className="mt-5 container">
-        <div className="row align-items-center auth-container">
+    <div className="auth-page bg-white vh-100 my-auto ">
+      <div className="mt-5 container ">
+        <div className="d-flex justify-content-center align-items-center auth-container">
           {/* Carousel */}
           <motion.div
             id="carouselExampleAutoplaying"
@@ -186,7 +196,7 @@ function LoginContent() {
                 <Loading show={loading} />
               ) : (
                 <Form onSubmit={handleSubmit}>
-                  <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Group className="mb-3  " controlId="formBasicEmail">
                     <Form.Control
                       type="email"
                       name="email"

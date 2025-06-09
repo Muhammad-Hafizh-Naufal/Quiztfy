@@ -14,12 +14,29 @@ const leaderboard = async () => {
 };
 
 // Register
-const register = async (formData) => {
+// service.ts
+const register = async (formData: any) => {
   try {
     const response = await axios.post(`${API}/register`, formData);
     return response.data;
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log("Service caught error:", error);
+
+    // Buat custom error object yang lebih predictable
+    const customError = new Error();
+
+    if (error.response?.data?.message) {
+      customError.message = error.response.data.message;
+    } else if (error.response?.data) {
+      customError.message =
+        typeof error.response.data === "string"
+          ? error.response.data
+          : "Registration failed";
+    } else {
+      customError.message = error.message || "Network error";
+    }
+
+    throw customError;
   }
 };
 
@@ -29,7 +46,22 @@ const login = async (formData) => {
 
     return response.data;
   } catch (error) {
-    console.log(error);
+    // Buat custom error object yang lebih predictable
+    const customError = new Error();
+
+    if (error.response?.data?.message) {
+      customError.message = error.response.data.message;
+    } else if (error.response?.data) {
+      customError.message =
+        typeof error.response.data === "string"
+          ? error.response.data
+          : "Login failed";
+    } else {
+      customError.message = error.message || "Network error";
+    }
+
+    throw customError;
+    // console.log(error);
   }
 };
 

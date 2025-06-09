@@ -1,35 +1,46 @@
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
+/* Navbar Transparan awalnya */
+.navbar-transparent {
+  background-color: transparent !important;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.brand-tech {
-  font-size: 14px; /* Ukuran font untuk "Tech" */
-  font-weight: bold;
+/* Saat scroll, tambah efek gradient dan shadow */
+.navbar.scrolled {
+  background: linear-gradient(
+    90deg,
+    rgba(242, 163, 97, 1) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.brand-quiztfy {
-  font-size: 18px; /* Ukuran font untuk "Quiztfy" */
-  font-weight: bold;
+/* Fix untuk masalah scroll di mobile */
+@media (max-width: 991.98px) {
+  /* Pastikan offcanvas tidak mengganggu scroll body */
+  .offcanvas.show {
+    touch-action: manipulation;
+  }
+
+  /* Smooth transition untuk offcanvas */
+  .offcanvas {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  /* Fix untuk prevent scroll issues */
+  body.offcanvas-open {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100% !important;
+  }
 }
 
-/* .nav-link {
-  transition: color 0.3s;
+/* Pastikan backdrop tidak mengganggu scroll */
+.offcanvas-backdrop {
+  position: fixed !important;
 }
 
-.hover-underline {
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: #007bff;
-  transition: width 0.3s ease;
+/* Improve touch scrolling di dalam offcanvas */
+.offcanvas-body {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
-
-.nav-link:hover .hover-underline {
-  width: 100%;
-} */
-
-/* style login navbar login page safsohe */

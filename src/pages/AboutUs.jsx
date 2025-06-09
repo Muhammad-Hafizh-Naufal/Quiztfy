@@ -48,15 +48,14 @@ export default function AboutUs() {
 
             {/* Kolom untuk teks */}
             <motion.div variants={itemVariants} className="col-md-6">
-              <h2 className="mb-3">Tentang Kami</h2>
+              <h2 className="mb-3">Tentang Quiztfy</h2>
               <p>
-                Tech Quiztify adalah platform edukatif berbasis kuis yang kami
-                kembangkan bersama dengan tujuan untuk menginspirasi dan
-                mengedukasi generasi muda Indonesia dalam dunia teknologi
-                informasi dan pemrograman. Kami terdiri dari tim beranggotakan
-                tujuh orang yang berkomitmen untuk memberikan akses pengetahuan
-                dan pengalaman belajar interaktif bagi pelajar SMP hingga SMA di
-                seluruh Indonesia.
+                Quiztfy adalah platform kuis self-assessment berbasis web yang
+                dirancang khusus untuk pemula yang ingin mengasah pemahaman
+                dasar mereka di bidang Web Development. Platform ini memberikan
+                pengalaman belajar yang sederhana namun efektif melalui kumpulan
+                soal pilihan ganda, umpan balik langsung, dan sistem penilaian
+                otomatis.
               </p>
             </motion.div>
           </motion.div>
@@ -78,17 +77,17 @@ export default function AboutUs() {
             </motion.div>
 
             {/* Kolom untuk teks */}
-            <motion.div variants={itemVariants} className="col-md-6">
+            <motion.div variants={itemVariants} className="col-md-6 ">
               <h2 className="mb-3">Latar Belakang</h2>
               <p>
-                Tech Quiztify hadir sebagai respons atas meningkatnya minat anak
-                muda terhadap bidang teknologi informasi dan pemrograman. Kami
-                memahami bahwa generasi muda memerlukan wadah yang dapat
-                membimbing mereka memahami konsep teknologi sekaligus membantu
-                mereka menjelajahi jalur karir potensial di bidang ini. Platform
-                ini juga mendukung visi Indonesia Emas 2045, di mana generasi
-                muda yang cerdas dan berdaya saing tinggi akan menjadi kunci
-                bagi kemajuan bangsa.
+                Seiring dengan pesatnya perkembangan teknologi digital,
+                kebutuhan akan sarana belajar yang fleksibel dan mandiri semakin
+                meningkat. Banyak platform kuis online yang berfokus pada
+                kompetisi grup, namun belum banyak yang menyediakan sistem
+                evaluasi individu yang ramah pemula. Quiztfy hadir untuk
+                menjawab kebutuhan tersebut dengan menghadirkan platform kuis
+                berbasis MERN Stack yang memungkinkan pengguna belajar dan
+                mengevaluasi pemahaman mereka secara mandiri dan terstruktur.
               </p>
             </motion.div>
           </motion.div>
@@ -108,10 +107,10 @@ export default function AboutUs() {
                 variants={itemVariants}
                 className="col-md-4 text-center"
               >
-                <h4>1. Memberikan Pendidikan yang Interaktif</h4>
-                <p className="">
-                  Menyediakan kuis dan materi yang relevan agar siswa bisa
-                  belajar dengan cara yang lebih menyenangkan.
+                <h4>1. Belajar Jadi Menyenangkan</h4>
+                <p>
+                  Menyediakan kuis interaktif agar proses belajar terasa ringan
+                  dan seru.
                 </p>
               </motion.div>
 
@@ -120,10 +119,10 @@ export default function AboutUs() {
                 variants={itemVariants}
                 className="col-md-4 text-center"
               >
-                <h4>2. Menginspirasi Jalur Karir di Teknologi</h4>
+                <h4>2. Dorong Karir di Dunia Digital</h4>
                 <p>
-                  Menunjukkan jalur karir yang dapat dikejar di bidang teknologi
-                  berdasarkan minat dan keterampilan mereka.
+                  Menginspirasi siswa memahami potensi karir di bidang
+                  teknologi.
                 </p>
               </motion.div>
 
@@ -132,11 +131,10 @@ export default function AboutUs() {
                 variants={itemVariants}
                 className="col-md-5 mt-md-5 text-center"
               >
-                <h4>3. Memajukan Kompetensi Digital Anak Bangsa</h4>
+                <h4>3. Tingkatkan Skill Digital Anak Bangsa</h4>
                 <p>
-                  Membantu siswa membangun keterampilan digital dasar hingga
-                  tingkat lanjut untuk menghadapi masa depan yang penuh dengan
-                  peluang teknologi.
+                  Membekali pengguna dengan dasar keterampilan teknologi masa
+                  kini.
                 </p>
               </motion.div>
             </div>
@@ -149,43 +147,60 @@ export default function AboutUs() {
             animate="show"
             className="mt-5"
           >
-            <h1 className="text-center">Apa yang Kami Tawarkan</h1>
+            <h1 className="text-center mb-3 fw-bold">Apa yang Kami Tawarkan</h1>
             <p className="text-center mx-auto col-md-8">
               Di Tech Quiztify, siswa dapat memilih dari delapan topik utama,
               mulai dari Web Development hingga Artificial Intelligence. Setiap
-              topik dirancang untuk
+              topik dirancang untuk pemula yang ingin berkembang di bidang
+              teknologi.
             </p>
-            <div className="row justify-content-center mt-5 gap-4">
-              {/* Box 1 */}
-              <motion.div
-                variants={itemVariants}
-                className="col-md-3 p-4 shadow rounded bg-white"
-              >
-                <div className="d-flex flex-column justify-content-center align-items-center">
-                  <h1 className="fw-bold text-warning">1</h1>
-                  <p>Membaca Materi</p>
+
+            <div className="row justify-content-center mt-5 g-4">
+              {/* Card 1 */}
+              <motion.div variants={itemVariants} className="col-md-3">
+                <div className="card h-100 shadow border-0 text-center">
+                  <div className="card-body">
+                    <i className="bi bi-emoji-smile text-warning fs-1 mb-3"></i>
+                    <h5 className="card-title fw-bold">
+                      Evaluasi Mandiri Tanpa Tekanan
+                    </h5>
+                    <p className="card-text">
+                      Belajar dengan santai tanpa batasan waktu atau kompetisi,
+                      agar fokus memahami materi.
+                    </p>
+                  </div>
                 </div>
               </motion.div>
 
-              {/* Box 2 */}
-              <motion.div
-                variants={itemVariants}
-                className="col-md-3 p-4 shadow rounded bg-white mx-md-5"
-              >
-                <div className="d-flex flex-column justify-content-center align-items-center">
-                  <h1 className="fw-bold text-warning">2</h1>
-                  <p>Mengikuti Kuis</p>
+              {/* Card 2 */}
+              <motion.div variants={itemVariants} className="col-md-3">
+                <div className="card h-100 shadow border-0 text-center">
+                  <div className="card-body">
+                    <i className="bi bi-journal-code text-warning fs-1 mb-3"></i>
+                    <h5 className="card-title fw-bold">
+                      Materi Khusus untuk Pemula
+                    </h5>
+                    <p className="card-text">
+                      Soal disusun dari konsep dasar HTML/CSS, cocok untuk yang
+                      baru belajar coding.
+                    </p>
+                  </div>
                 </div>
               </motion.div>
 
-              {/* Box 3 */}
-              <motion.div
-                variants={itemVariants}
-                className="col-md-3 p-4 shadow rounded bg-white"
-              >
-                <div className="d-flex flex-column justify-content-center align-items-center">
-                  <h1 className="fw-bold text-warning">3</h1>
-                  <p>Menjelajahi Jenjang Karir</p>
+              {/* Card 3 */}
+              <motion.div variants={itemVariants} className="col-md-3">
+                <div className="card h-100 shadow border-0 text-center">
+                  <div className="card-body">
+                    <i className="bi bi-check2-circle text-warning fs-1 mb-3"></i>
+                    <h5 className="card-title fw-bold">
+                      Umpan Balik Langsung & Jelas
+                    </h5>
+                    <p className="card-text">
+                      Lihat jawaban benar dan salah secara visual setelah kuis
+                      untuk pembelajaran yang efektif.
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             </div>

@@ -23,18 +23,41 @@ function RegisterContent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setMessage("");
+
     try {
+      console.log("Submitting form with data:", formData);
       const response = await service.register(formData);
-      setMessage(response.message);
+      console.log("Register response:", response);
+
+      // Safe message handling
+      const successMessage = response?.message || "Registration successful!";
+      setMessage(successMessage);
+
+      // Reset form
       setFormData({
         fullName: "",
         email: "",
         password: "",
       });
 
-      navigate("/login");
+      // Navigate after delay
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
     } catch (error) {
-      setMessage(error.message);
+      console.log("Caught error in component:", error);
+
+      // Super safe error message handling
+      let errorMessage = "Registration failed. Please try again.";
+
+      if (error && typeof error === "object") {
+        if (error.message && typeof error.message === "string") {
+          errorMessage = error.message;
+        }
+      }
+
+      setMessage(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -181,6 +204,7 @@ function RegisterContent() {
                       onChange={handleChange}
                       placeholder="Password"
                       className="form-control"
+                      minLength={8}
                       required
                     />
                   </div>
