@@ -2,6 +2,7 @@ import axios from "axios";
 
 const API = "http://localhost:3000/api";
 
+// USER
 // leaderboard
 const leaderboard = async () => {
   try {
@@ -13,8 +14,32 @@ const leaderboard = async () => {
   }
 };
 
+// Login
+const login = async (formData) => {
+  try {
+    const response = await axios.post(`${API}/login`, formData);
+
+    return response.data;
+  } catch (error) {
+    // Buat custom error object yang lebih predictable
+    const customError = new Error();
+
+    if (error.response?.data?.message) {
+      customError.message = error.response.data.message;
+    } else if (error.response?.data) {
+      customError.message =
+        typeof error.response.data === "string"
+          ? error.response.data
+          : "Login failed";
+    } else {
+      customError.message = error.message || "Network error";
+    }
+
+    throw customError;
+    // console.log(error);
+  }
+};
 // Register
-// service.ts
 const register = async (formData: any) => {
   try {
     const response = await axios.post(`${API}/register`, formData);
@@ -39,13 +64,33 @@ const register = async (formData: any) => {
     throw customError;
   }
 };
-
-const login = async (formData) => {
+// user Info
+const getUserInfo = async () => {
   try {
-    const response = await axios.post(`${API}/login`, formData);
-
+    const response = await axios.get(`${API}/user/info`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
     return response.data;
   } catch (error) {
+    const err = error as Error;
+    console.log(err.message);
+  }
+};
+
+// update user
+const updateUser = async (formData: any) => {
+  try {
+    const response = await axios.put(`${API}/user/update`, formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log("Service caught error:", error);
+
     // Buat custom error object yang lebih predictable
     const customError = new Error();
 
@@ -55,13 +100,12 @@ const login = async (formData) => {
       customError.message =
         typeof error.response.data === "string"
           ? error.response.data
-          : "Login failed";
+          : "Registration failed";
     } else {
       customError.message = error.message || "Network error";
     }
 
     throw customError;
-    // console.log(error);
   }
 };
 
@@ -353,16 +397,16 @@ const review = async (quizId) => {
 // };
 
 export default {
+  // user
   leaderboard,
-  register,
   login,
+  register,
+  getUserInfo,
+  updateUser,
 
+  // quiz
   getQuizById,
   submitQuizResult,
-
-  // getAllQuiz,
-  // getQuizById,
-  // questionSubmit,
 
   // materi
   getAllMateri,

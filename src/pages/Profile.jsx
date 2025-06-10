@@ -1,69 +1,81 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import service from "../services/service";
 
 export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
-  const [userInfo, setUserInfo] = useState({
-    name: "Muhammad Hafizh Naufal",
-    email: "hapis@email.com",
-    phone: "08123456789",
-    institution: "Universitas Gunadarma",
-    major: "Sistem Informasi",
-    semester: "6",
-  });
-
-  const [tempUserInfo, setTempUserInfo] = useState(userInfo);
+  const [userInfo, setUserInfo] = useState({});
+  const [tempUserInfo, setTempUserInfo] = useState({});
 
   // Dummy data untuk statistik
-  const stats = {
-    totalQuizzes: 45,
-    completedQuizzes: 38,
-    averageScore: 85,
-    totalLearningTime: "24 jam",
-    streak: 7,
-    rank: 12,
-  };
+  // const stats = {
+  //   totalQuizzes: 45,
+  //   completedQuizzes: 38,
+  //   averageScore: 85,
+  //   totalLearningTime: "24 jam",
+  //   streak: 7,
+  //   rank: 12,
+  // };
 
-  const recentActivities = [
-    {
-      type: "quiz",
-      title: "JavaScript Fundamentals",
-      score: 90,
-      date: "2024-06-07",
-    },
-    {
-      type: "material",
-      title: "React Hooks",
-      progress: 100,
-      date: "2024-06-06",
-    },
-    { type: "quiz", title: "CSS Grid Layout", score: 78, date: "2024-06-05" },
-    {
-      type: "material",
-      title: "Node.js Basics",
-      progress: 60,
-      date: "2024-06-04",
-    },
-  ];
+  // const recentActivities = [
+  //   {
+  //     type: "quiz",
+  //     title: "JavaScript Fundamentals",
+  //     score: 90,
+  //     date: "2024-06-07",
+  //   },
+  //   {
+  //     type: "material",
+  //     title: "React Hooks",
+  //     progress: 100,
+  //     date: "2024-06-06",
+  //   },
+  //   { type: "quiz", title: "CSS Grid Layout", score: 78, date: "2024-06-05" },
+  //   {
+  //     type: "material",
+  //     title: "Node.js Basics",
+  //     progress: 60,
+  //     date: "2024-06-04",
+  //   },
+  // ];
 
-  const achievements = [
-    { title: "First Quiz Completed", icon: "🏆", earned: true },
-    { title: "Perfect Score", icon: "⭐", earned: true },
-    { title: "7 Day Streak", icon: "🔥", earned: true },
-    { title: "Top 20 Leaderboard", icon: "🥉", earned: true },
-    { title: "Speed Runner", icon: "⚡", earned: false },
-    { title: "Knowledge Master", icon: "🎓", earned: false },
-  ];
+  // const achievements = [
+  //   { title: "First Quiz Completed", icon: "🏆", earned: true },
+  //   { title: "Perfect Score", icon: "⭐", earned: true },
+  //   { title: "7 Day Streak", icon: "🔥", earned: true },
+  //   { title: "Top 20 Leaderboard", icon: "🥉", earned: true },
+  //   { title: "Speed Runner", icon: "⚡", earned: false },
+  //   { title: "Knowledge Master", icon: "🎓", earned: false },
+  // ];
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await service.getUserInfo();
+        setUserInfo(user);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const handleEdit = () => {
-    setIsEditing(true);
     setTempUserInfo(userInfo);
+    setIsEditing(true);
   };
 
-  const handleSave = () => {
-    setUserInfo(tempUserInfo);
-    setIsEditing(false);
+  const handleSave = async () => {
+    try {
+      await service.updateUser(tempUserInfo);
+      setUserInfo(tempUserInfo);
+      setIsEditing(false);
+    } catch (error) {
+      console.log(error);
+      alert("Failed to save changes.");
+    }
   };
 
   const handleCancel = () => {
@@ -100,12 +112,12 @@ export default function Profile() {
                   </span>
                 </div>
                 <h2 className="fontG fw-bold animated-gradient-text mb-2">
-                  {userInfo.name}
+                  {userInfo.fullName}
                 </h2>
-                <p className="mb-1">{userInfo.institution}</p>
+                {/* <p className="mb-1">{userInfo.institution}</p>
                 <p className="text-muted">
                   {userInfo.major} - Semester {userInfo.semester}
-                </p>
+                </p> */}
               </div>
             </div>
           </div>
@@ -142,7 +154,7 @@ export default function Profile() {
                   <div>
                     <div className="mb-3">
                       <small className="text-muted">Nama Lengkap</small>
-                      <p className="mb-0 fw-medium">{userInfo.name}</p>
+                      <p className="mb-0 fw-medium">{userInfo.fullName}</p>
                     </div>
                     <div className="mb-3">
                       <small className="text-muted">Email</small>
@@ -176,7 +188,7 @@ export default function Profile() {
                         className="form-control"
                         value={tempUserInfo.name}
                         onChange={(e) =>
-                          handleInputChange("name", e.target.value)
+                          handleInputChange("fullName", e.target.value)
                         }
                       />
                     </div>
@@ -188,12 +200,9 @@ export default function Profile() {
                         type="email"
                         className="form-control"
                         value={tempUserInfo.email}
-                        onChange={(e) =>
-                          handleInputChange("email", e.target.value)
-                        }
                       />
                     </div>
-                    <div className="mb-3">
+                    {/* <div className="mb-3">
                       <label className="form-label small text-muted">
                         No. Telepon
                       </label>
@@ -249,7 +258,7 @@ export default function Profile() {
                           </option>
                         ))}
                       </select>
-                    </div>
+                    </div> */}
                   </div>
                 )}
               </div>

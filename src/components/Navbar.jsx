@@ -150,7 +150,7 @@ export default function Navbar() {
 
         {!isAuthPage && (
           <button
-            className="navbar-toggler border-0"
+            className="navbar-toggler  border-0"
             type="button"
             data-bs-toggle="offcanvas"
             data-bs-target="#navbarOffcanvas"
@@ -158,13 +158,14 @@ export default function Navbar() {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span className="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon "></span>
           </button>
         )}
 
         {!isAuthPage && (
           <div
             className="offcanvas offcanvas-end"
+            style={{ backgroundColor: "#f2a361" }}
             tabIndex="-1"
             id="navbarOffcanvas"
             aria-labelledby="navbarOffcanvasLabel"
@@ -175,7 +176,7 @@ export default function Navbar() {
               </h5>
               <button
                 type="button"
-                className="btn-close text-reset"
+                className="btn-close text-reset "
                 data-bs-dismiss="offcanvas"
                 aria-label="Close"
               ></button>
@@ -255,32 +256,34 @@ export default function Navbar() {
                     {/* Garis pemisah */}
                     <hr className="my-3 border-secondary" />
 
-                    {/* User info */}
-                    <div className="d-flex align-items-center justify-content-center gap-2 mb-3">
-                      <img
-                        src="../assets/user.png"
-                        alt="User"
-                        width="35"
-                        className="rounded-circle"
-                      />
-                      <span className="fw-semibold">{user.fullName}</span>
-                    </div>
+                    <div className="">
+                      {/* User info */}
+                      <div className="d-flex align-items-center justify-content-center gap-2 mb-3">
+                        <img
+                          src="../assets/user.png"
+                          alt="User"
+                          width="35"
+                          className="rounded-circle"
+                        />
+                        <span className="fw-semibold">{user.fullName}</span>
+                      </div>
 
-                    {/* Menu items */}
-                    <div className="d-flex flex-column gap-2 text-center">
-                      <NavLink
-                        to="/profile"
-                        className="btn btn-outline-primary w-100"
-                        onClick={handleNavClick}
-                      >
-                        <i className="bi bi-person-fill me-2"></i> Profile
-                      </NavLink>
-                      <button
-                        className="btn btn-outline-danger w-100"
-                        onClick={handleLogout}
-                      >
-                        <i className="bi bi-box-arrow-right me-2"></i> Log Out
-                      </button>
+                      {/* Menu items */}
+                      <div className="d-flex flex-column gap-2 text-center ">
+                        <NavLink
+                          to="/profile"
+                          className="btn btn-outline-primary w-100"
+                          onClick={handleNavClick}
+                        >
+                          <i className="bi bi-person-fill me-2"></i> Profile
+                        </NavLink>
+                        <button
+                          className="btn btn-outline-danger w-100"
+                          onClick={handleLogout}
+                        >
+                          <i className="bi bi-box-arrow-right me-2"></i> Log Out
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -292,7 +295,7 @@ export default function Navbar() {
                       Already have an account?
                     </p>
                     <Link to="/login">
-                      <button className="btn btn-outline-dark rounded-pill px-4 border-0 shadow ">
+                      <button className="btn btn-outline-warning rounded-pill px-4 border-0 shadow ">
                         <i className="bi bi-box-arrow-in-right me-2 "></i>
                         Login
                       </button>

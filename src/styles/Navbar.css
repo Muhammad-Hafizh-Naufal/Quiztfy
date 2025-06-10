@@ -14,6 +14,10 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.bg {
+  backgorund-color: #f2a361;
+}
+
 /* Fix untuk masalah scroll di mobile */
 @media (max-width: 991.98px) {
   /* Pastikan offcanvas tidak mengganggu scroll body */
