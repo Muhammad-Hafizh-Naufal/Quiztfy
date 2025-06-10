@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "https://quizz-be.vercel.app/api";
+const API = import.meta.env.VITE_API_URL;
 
 // USER
 // leaderboard
@@ -80,9 +80,15 @@ const getUserInfo = async () => {
 };
 
 // update user
-const updateUser = async (formData: any) => {
+const updateUser = async (formData) => {
   try {
-    const response = await axios.put(`${API}/user/update`, formData, {
+    // Filter out empty password
+    const cleanData = { ...formData };
+    if (!cleanData.password || cleanData.password.trim() === "") {
+      delete cleanData.password;
+    }
+
+    const response = await axios.patch(`${API}/user/update`, cleanData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -108,58 +114,6 @@ const updateUser = async (formData: any) => {
     throw customError;
   }
 };
-
-// quiz
-
-// const getAllQuiz = async () => {
-//   try {
-//     const response = await axios.get(`${API}/quiz`);
-//     return response.data;
-//   } catch (error) {
-//     const err = error as Error;
-//     console.log(err.message);
-//   }
-// };
-
-// const getQuizById = async (id) => {
-//   try {
-//     // const token = localStorage.getItem("token");
-//     // if (!token) {
-//     //   throw new Error("No token found");
-//     // }
-
-//     const response = await axios.get(`${API}/quiz/${id}`, {
-//       // headers: {
-//       //   Authorization: `Bearer ${token}`,
-//       // },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     const err = error as Error;
-//     console.error("Error fetching quiz:", err.message);
-//     throw err; // Lempar error agar bisa ditangani oleh komponen
-//   }
-// };
-
-// const questionSubmit = async (formData) => {
-//   try {
-//     const token = localStorage.getItem("token"); // Ambil token dari localStorage
-//     if (!token) {
-//       throw new Error("No token found");
-//     }
-
-//     const response = await axios.post(`${API}/quiz/submit`, formData, {
-//       headers: {
-//         Authorization: `Bearer ${token}`, // Sertakan token dalam header
-//       },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     const err = error as Error;
-//     console.log(err.message);
-//     throw err;
-//   }
-// };
 
 // materi
 const getAllMateri = async () => {

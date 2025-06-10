@@ -1,3 +1,4 @@
+// Frontend - Perbaikan untuk Profile Component
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -7,47 +8,8 @@ export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const [tempUserInfo, setTempUserInfo] = useState({});
-
-  // Dummy data untuk statistik
-  // const stats = {
-  //   totalQuizzes: 45,
-  //   completedQuizzes: 38,
-  //   averageScore: 85,
-  //   totalLearningTime: "24 jam",
-  //   streak: 7,
-  //   rank: 12,
-  // };
-
-  // const recentActivities = [
-  //   {
-  //     type: "quiz",
-  //     title: "JavaScript Fundamentals",
-  //     score: 90,
-  //     date: "2024-06-07",
-  //   },
-  //   {
-  //     type: "material",
-  //     title: "React Hooks",
-  //     progress: 100,
-  //     date: "2024-06-06",
-  //   },
-  //   { type: "quiz", title: "CSS Grid Layout", score: 78, date: "2024-06-05" },
-  //   {
-  //     type: "material",
-  //     title: "Node.js Basics",
-  //     progress: 60,
-  //     date: "2024-06-04",
-  //   },
-  // ];
-
-  // const achievements = [
-  //   { title: "First Quiz Completed", icon: "🏆", earned: true },
-  //   { title: "Perfect Score", icon: "⭐", earned: true },
-  //   { title: "7 Day Streak", icon: "🔥", earned: true },
-  //   { title: "Top 20 Leaderboard", icon: "🥉", earned: true },
-  //   { title: "Speed Runner", icon: "⚡", earned: false },
-  //   { title: "Knowledge Master", icon: "🎓", earned: false },
-  // ];
+  const [newPassword, setNewPassword] = useState(""); // State terpisah untuk password baru
+  const [confirmPassword, setConfirmPassword] = useState(""); // Konfirmasi password
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -64,22 +26,45 @@ export default function Profile() {
 
   const handleEdit = () => {
     setTempUserInfo(userInfo);
+    setNewPassword(""); // Reset password fields
+    setConfirmPassword("");
     setIsEditing(true);
   };
 
   const handleSave = async () => {
     try {
-      await service.updateUser(tempUserInfo);
+      // Validasi password jika diisi
+      if (newPassword && newPassword !== confirmPassword) {
+        alert("Password dan konfirmasi password tidak cocok!");
+        return;
+      }
+
+      // Buat data untuk dikirim
+      const updateData = {
+        fullName: tempUserInfo.fullName,
+      };
+
+      // Hanya tambahkan password jika diisi
+      if (newPassword && newPassword.trim() !== "") {
+        updateData.password = newPassword;
+      }
+
+      await service.updateUser(updateData);
       setUserInfo(tempUserInfo);
       setIsEditing(false);
+      setNewPassword("");
+      setConfirmPassword("");
+      alert("Data berhasil diperbarui!");
     } catch (error) {
       console.log(error);
-      alert("Failed to save changes.");
+      alert("Gagal menyimpan perubahan.");
     }
   };
 
   const handleCancel = () => {
     setTempUserInfo(userInfo);
+    setNewPassword("");
+    setConfirmPassword("");
     setIsEditing(false);
   };
 
@@ -114,10 +99,6 @@ export default function Profile() {
                 <h2 className="fontG fw-bold animated-gradient-text mb-2">
                   {userInfo.fullName}
                 </h2>
-                {/* <p className="mb-1">{userInfo.institution}</p>
-                <p className="text-muted">
-                  {userInfo.major} - Semester {userInfo.semester}
-                </p> */}
               </div>
             </div>
           </div>
@@ -186,7 +167,7 @@ export default function Profile() {
                       <input
                         type="text"
                         className="form-control"
-                        value={tempUserInfo.name}
+                        value={tempUserInfo.fullName || ""}
                         onChange={(e) =>
                           handleInputChange("fullName", e.target.value)
                         }
@@ -199,248 +180,59 @@ export default function Profile() {
                       <input
                         type="email"
                         className="form-control"
-                        value={tempUserInfo.email}
+                        value={tempUserInfo.email || ""}
+                        disabled
                       />
+                      <small className="text-muted">
+                        Email tidak dapat diubah
+                      </small>
                     </div>
-                    {/* <div className="mb-3">
-                      <label className="form-label small text-muted">
-                        No. Telepon
-                      </label>
-                      <input
-                        type="tel"
-                        className="form-control"
-                        value={tempUserInfo.phone}
-                        onChange={(e) =>
-                          handleInputChange("phone", e.target.value)
-                        }
-                      />
+
+                    {/* Section untuk ubah password */}
+                    <div className="border-top pt-3 mt-3">
+                      <h6 className="text-muted mb-3">
+                        Ubah Password (Opsional)
+                      </h6>
+                      <div className="mb-3">
+                        <label className="form-label small text-muted">
+                          Password Baru
+                        </label>
+                        <input
+                          type="password"
+                          className="form-control"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          placeholder="Kosongkan jika tidak ingin mengubah password"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label className="form-label small text-muted">
+                          Konfirmasi Password Baru
+                        </label>
+                        <input
+                          type="password"
+                          className="form-control"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          placeholder="Ulangi password baru"
+                        />
+                      </div>
+                      {newPassword &&
+                        confirmPassword &&
+                        newPassword !== confirmPassword && (
+                          <small className="text-danger">
+                            Password tidak cocok!
+                          </small>
+                        )}
                     </div>
-                    <div className="mb-3">
-                      <label className="form-label small text-muted">
-                        Institusi
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={tempUserInfo.institution}
-                        onChange={(e) =>
-                          handleInputChange("institution", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label className="form-label small text-muted">
-                        Jurusan
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={tempUserInfo.major}
-                        onChange={(e) =>
-                          handleInputChange("major", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="mb-0">
-                      <label className="form-label small text-muted">
-                        Semester
-                      </label>
-                      <select
-                        className="form-select"
-                        value={tempUserInfo.semester}
-                        onChange={(e) =>
-                          handleInputChange("semester", e.target.value)
-                        }
-                      >
-                        {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
-                          <option key={sem} value={sem}>
-                            {sem}
-                          </option>
-                        ))}
-                      </select>
-                    </div> */}
                   </div>
                 )}
               </div>
-              {/* Achievements
-              <div className="bg-white rounded-4 shadow p-4">
-                <h5 className="fw-bold mb-3">Pencapaian</h5>
-                <div className="row g-2">
-                  {achievements.map((achievement, index) => (
-                    <div className="col-6" key={index}>
-                      <div
-                        className={`text-center p-3 rounded-3 ${
-                          achievement.earned
-                            ? "bg-light border border-success"
-                            : "bg-light opacity-50"
-                        }`}
-                      >
-                        <div className="fs-4 mb-1">{achievement.icon}</div>
-                        <small
-                          className={
-                            achievement.earned
-                              ? "text-dark fw-medium"
-                              : "text-muted"
-                          }
-                        >
-                          {achievement.title}
-                        </small>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div> */}
             </div>
 
             {/* Right Column - Stats & Activities */}
             <div className="col-lg-8">
-              {/* Statistics Cards */}
-              {/* <div className="row mb-4">
-                <div className="col-md-4 mb-3">
-                  <div className="bg-white rounded-4 shadow p-4 text-center">
-                    <div className="text-primary fs-2 mb-2">
-                      <i className="bi bi-journal-check"></i>
-                    </div>
-                    <h4 className="fw-bold text-primary mb-1">
-                      {stats.completedQuizzes}
-                    </h4>
-                    <small className="text-muted">Kuis Selesai</small>
-                    <div className="mt-2">
-                      <small className="text-muted">
-                        dari {stats.totalQuizzes} total
-                      </small>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-4 mb-3">
-                  <div className="bg-white rounded-4 shadow p-4 text-center">
-                    <div className="text-success fs-2 mb-2">
-                      <i className="bi bi-graph-up"></i>
-                    </div>
-                    <h4 className="fw-bold text-success mb-1">
-                      {stats.averageScore}%
-                    </h4>
-                    <small className="text-muted">Rata-rata Skor</small>
-                    <div className="mt-2">
-                      <div className="progress" style={{ height: "4px" }}>
-                        <div
-                          className="progress-bar bg-success"
-                          style={{ width: `${stats.averageScore}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-4 mb-3">
-                  <div className="bg-white rounded-4 shadow p-4 text-center">
-                    <div className="text-warning fs-2 mb-2">
-                      <i className="bi bi-fire"></i>
-                    </div>
-                    <h4 className="fw-bold text-warning mb-1">
-                      {stats.streak}
-                    </h4>
-                    <small className="text-muted">Hari Berturut</small>
-                    <div className="mt-2">
-                      <small className="text-muted">Keep it up!</small>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
-
-              {/* Additional Stats */}
-              {/* <div className="row mb-4">
-                <div className="col-md-6 mb-3">
-                  <div className="bg-white rounded-4 shadow p-4">
-                    <div className="d-flex align-items-center">
-                      <div className="text-info fs-3 me-3">
-                        <i className="bi bi-clock"></i>
-                      </div>
-                      <div>
-                        <h5 className="fw-bold mb-0">
-                          {stats.totalLearningTime}
-                        </h5>
-                        <small className="text-muted">
-                          Total Waktu Belajar
-                        </small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6 mb-3">
-                  <div className="bg-white rounded-4 shadow p-4">
-                    <div className="d-flex align-items-center">
-                      <div className="text-danger fs-3 me-3">
-                        <i className="bi bi-trophy"></i>
-                      </div>
-                      <div>
-                        <h5 className="fw-bold mb-0">#{stats.rank}</h5>
-                        <small className="text-muted">
-                          Peringkat Leaderboard
-                        </small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
-
-              {/* Recent Activities */}
-              {/* <div className="bg-white rounded-4 shadow p-4">
-                <h5 className="fw-bold mb-3">Aktivitas Terbaru</h5>
-                <div className="timeline">
-                  {recentActivities.map((activity, index) => (
-                    <div className="d-flex mb-3" key={index}>
-                      <div className="flex-shrink-0 me-3">
-                        <div
-                          className={`rounded-circle p-2 ${
-                            activity.type === "quiz"
-                              ? "bg-primary"
-                              : "bg-success"
-                          }`}
-                        >
-                          <i
-                            className={`bi ${
-                              activity.type === "quiz"
-                                ? "bi-question-circle"
-                                : "bi-book"
-                            } text-white`}
-                          ></i>
-                        </div>
-                      </div>
-                      <div className="flex-grow-1">
-                        <h6 className="mb-1 fw-medium">{activity.title}</h6>
-                        <div className="d-flex align-items-center gap-3 mb-1">
-                          {activity.type === "quiz" ? (
-                            <span
-                              className={`badge ${
-                                activity.score >= 80
-                                  ? "bg-success"
-                                  : activity.score >= 60
-                                  ? "bg-warning"
-                                  : "bg-danger"
-                              }`}
-                            >
-                              Skor: {activity.score}%
-                            </span>
-                          ) : (
-                            <span className="badge bg-success">
-                              Progress: {activity.progress}%
-                            </span>
-                          )}
-                        </div>
-                        <small className="text-muted">
-                          <i className="bi bi-calendar3"></i>{" "}
-                          {new Date(activity.date).toLocaleDateString("id-ID")}
-                        </small>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="text-center mt-3">
-                  <button className="btn btn-outline-primary">
-                    <i className="bi bi-eye"></i> Lihat Semua Aktivitas
-                  </button>
-                </div>
-              </div> */}
+              {/* Konten lainnya bisa ditambahkan di sini */}
             </div>
           </div>
         </div>
