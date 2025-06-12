@@ -150,7 +150,7 @@ export default function Navbar() {
 
         {!isAuthPage && (
           <button
-            className="navbar-toggler  border-0"
+            className="navbar-toggler border-0"
             type="button"
             data-bs-toggle="offcanvas"
             data-bs-target="#navbarOffcanvas"

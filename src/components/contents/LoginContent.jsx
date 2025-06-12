@@ -219,7 +219,7 @@ function LoginContent() {
                   </Form.Group>
 
                   <Button
-                    className="d-flex justify-content-center mx-auto"
+                    className="d-flex btn-warning justify-content-center mx-auto"
                     type="submit"
                   >
                     Login

@@ -11,6 +11,7 @@ function RegisterContent() {
     fullName: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [message, setMessage] = useState("");
@@ -24,6 +25,13 @@ function RegisterContent() {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+
+    // validate password
+    if (formData.password != formData.confirmPassword) {
+      setMessage("Password not match!");
+      setLoading(false);
+      return;
+    }
 
     try {
       console.log("Submitting form with data:", formData);
@@ -208,9 +216,33 @@ function RegisterContent() {
                       required
                     />
                   </div>
+                  <div className="form-group mb-3">
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      value={formData["confirmPassword"]}
+                      onChange={handleChange}
+                      placeholder="Confirm Password"
+                      className="form-control"
+                      minLength={8}
+                      required
+                    />
+                    <label htmlFor="" className="form-check-label mt-2">
+                      <input
+                        type="checkbox"
+                        name="password"
+                        // value={formData.password}
+                        id=""
+                        className="me-2"
+                        checked={formData.password.length >= 8}
+                        readOnly
+                      />
+                      Password must be at least 8 characters
+                    </label>
+                  </div>
 
                   <button
-                    className="d-flex justify-content-center mx-auto btn btn-primary"
+                    className="d-flex justify-content-center mx-auto btn btn-warning"
                     type="submit"
                   >
                     Register

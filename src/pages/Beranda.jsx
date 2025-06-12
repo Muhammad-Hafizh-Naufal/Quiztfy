@@ -34,7 +34,7 @@ export default function Beranda() {
               </p>
               <NavLink
                 to={"/dashboard"}
-                className="btn btn-primary btn-lg px-4 py-3 fw-semibold shadow-sm"
+                className="btn btn-warning btn-lg px-4 py-3 fw-semibold shadow-sm rounded-pill"
               >
                 <i className="bi bi-caret-right-fill me-2"></i> Start Now
               </NavLink>
@@ -56,10 +56,10 @@ export default function Beranda() {
           <div className="row g-0">
             {/* Kolom kiri */}
             <div
-              className="col-12 col-md-4 d-flex flex-column justify-content-center align-items-center text-white text-center p-5 rounded-start-4"
+              className="col-12 col-md-3 d-flex flex-column justify-content-center align-items-center text-white text-center p-5 rounded-start-4"
               style={{ backgroundColor: "#F2A361" }}
             >
-              <div className="fs-3 fw-semibold mb-3">
+              <div className="fs-1 fw-bold mb-3 ">
                 Choose
                 <br />
                 Your
@@ -67,7 +67,7 @@ export default function Beranda() {
                 Path
               </div>
               <div
-                className="small fw-normal w-100"
+                className="small fs-5 fw-normal w-100"
                 style={{ maxWidth: "90%" }}
               >
                 Explore learning materials, test your skills with quizzes, and
