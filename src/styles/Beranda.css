@@ -1,13 +1,11 @@
 /* Animasi teks gradient untuk judul */
 .animated-gradient-text {
-  background: linear-gradient(270deg, #f2a361, #fcd58b, #f2a361);
-  background-size: 600% 600%;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradientBG 8s ease infinite;
+  animation: gradient-animation 3s ease infinite;
 }
-
-@keyframes gradientBG {
+@keyframes gradient-animation {
   0% {
     background-position: 0% 50%;
   }

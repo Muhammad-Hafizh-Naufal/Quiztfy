@@ -1,12 +1,9 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react"; // Tambahkan useMemo dan useCallback
-import { useParams } from "react-router-dom";
-import service from "../../services/service"; // Pastikan path ini benar
-import "../../styles/CourseContent.css"; // Pastikan path ini benar
-import Loading from "../Loading"; // Komponen Loading Anda
+import React, { useEffect, useState, useMemo, useCallback } from "react";
+import { useParams, Link } from "react-router-dom";
+import service from "../../services/service";
+import "../../styles/CourseContent.css";
+import Loading from "../Loading";
 
-// Fungsi helper untuk merender konten terstruktur
-// Tidak banyak perubahan di sini, diasumsikan sudah berfungsi sesuai kebutuhan.
-// Pertimbangkan untuk memindahkannya ke file terpisah jika sangat panjang atau digunakan di tempat lain.
 function renderStructuredContent(text) {
   if (!text || typeof text !== "string") {
     return <p className="text-muted">Konten tekstual tidak tersedia.</p>;
@@ -173,6 +170,24 @@ export default function CourseContent() {
     }
     return (
       <div className="placeholder-content text-center text-muted">
+        {/* navigasi Kembali */}
+        <div className="justify-content-center position-relative">
+          <Link
+            className=" d-none d-md-block position-absolute top-0 start-0 ms-4"
+            to={`/course/${materialId}`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="40"
+              fill="currentColor"
+              className="bi bi-arrow-left-circle-fill text-warning "
+              viewBox="0 0 16 16"
+              style={{ width: "50px" }}
+            >
+              <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
+            </svg>
+          </Link>
+        </div>
         <h4>Pilih Bagian Konten</h4>
         <p>
           Silakan pilih salah satu bagian dari menu di samping untuk memulai.
