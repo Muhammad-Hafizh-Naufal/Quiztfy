@@ -1,17 +1,27 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Card, Button, Alert, Modal } from "react-bootstrap";
-import Loading from "../components/Loading"; // Pastikan komponen ini ada
-import Navbar from "../components/Navbar"; // Pastikan komponen ini ada
-import Footer from "../components/Footer"; // Pastikan komponen ini ada
-import service from "../services/service"; // Pastikan service ini benar
+import Loading from "../components/Loading";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import service from "../services/service";
+
+// 🔀 Fungsi shuffle
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
 
 export default function HalamanKuisGabungan() {
   const { quizId } = useParams();
   const navigate = useNavigate();
 
-  // State untuk mengelola data dan UI kuis
   const [quiz, setQuiz] = useState(null);
+  const [originalQuestions, setOriginalQuestions] = useState([]); // 🆕 Soal yang sudah diacak
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
@@ -25,21 +35,18 @@ export default function HalamanKuisGabungan() {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [quizStarted, setQuizStarted] = useState(false);
 
-  // Mengambil data kuis saat komponen dimuat
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
         setLoading(true);
         const data = await service.getQuizById(quizId);
 
-        // Memastikan data kuis dan pertanyaan ada
         if (!data || !data.questions || data.questions.length === 0) {
           throw new Error(
             "Kuis ini tidak memiliki pertanyaan atau data tidak valid."
           );
         }
 
-        // Mem-parsing 'options' dari string JSON menjadi array
         const processedQuestions = data.questions.map((q) => ({
           ...q,
           options: Array.isArray(q.options)
@@ -61,26 +68,26 @@ export default function HalamanKuisGabungan() {
     }
   }, [quizId]);
 
-  // Mengelola timer untuk setiap pertanyaan
   useEffect(() => {
     let timerId;
     if (quizStarted && !showScore && timer > 0) {
       timerId = setInterval(() => setTimer((prev) => prev - 1), 1000);
     } else if (timer === 0) {
-      handleAnswerSelect(null); // Pindah ke pertanyaan selanjutnya jika waktu habis
+      handleAnswerSelect(null);
     }
     return () => clearInterval(timerId);
   }, [timer, quizStarted, showScore]);
 
-  // Fungsi untuk memulai kuis
   const handleStartQuiz = () => {
+    const shuffled = shuffleArray(quiz.questions);
+    setOriginalQuestions(shuffled); // ✅ Simpan urutan acak
+    setQuiz((prev) => ({ ...prev, questions: shuffled }));
     setQuizStarted(true);
-    setTimer(30); // Atur ulang timer saat kuis dimulai
+    setTimer(30);
   };
 
-  // Fungsi yang dijalankan saat pengguna memilih jawaban
   const handleAnswerSelect = (selectedOption) => {
-    if (selectedAnswer !== null) return; // Mencegah klik ganda
+    if (selectedAnswer !== null) return;
 
     setSelectedAnswer(selectedOption);
     const currentQ = quiz.questions[currentQuestion];
@@ -100,26 +107,23 @@ export default function HalamanKuisGabungan() {
     const updatedAnswers = [...userAnswers, newAnswer];
     setUserAnswers(updatedAnswers);
 
-    // Memberi jeda sebelum ke pertanyaan berikutnya
     setTimeout(() => {
       if (currentQuestion < quiz.questions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
-        setTimer(30); // Reset timer
-        setSelectedAnswer(null); // Reset pilihan jawaban
+        setTimer(30);
+        setSelectedAnswer(null);
       } else {
         setShowScore(true);
         submitQuizResult(updatedAnswers, isCorrect ? score + 1 : score);
       }
-    }); // Jeda 1.5 detik
+    }, 1000);
   };
 
-  // Mengirim hasil kuis ke server (opsional, tergantung backend)
   const submitQuizResult = async (answers, score) => {
     setIsSubmitting(true);
     try {
-      // Format answers to match backend expectation
       const formattedAnswers = answers.map((ans, index) => ({
-        questionId: quiz.questions[index].id, // Use the question ID from the quiz data
+        questionId: originalQuestions[index].id,
         answer: ans.userAnswer,
       }));
 
@@ -134,7 +138,6 @@ export default function HalamanKuisGabungan() {
     }
   };
 
-  // Mengatur ulang state untuk mengulang kuis
   const handleRetryQuiz = () => {
     setQuizStarted(false);
     setShowScore(false);
@@ -145,11 +148,9 @@ export default function HalamanKuisGabungan() {
     setQuizSubmitted(false);
   };
 
-  // Menampilkan dan menyembunyikan modal review
   const handleShowReview = () => setShowReview(true);
   const handleCloseReview = () => setShowReview(false);
 
-  // Tampilan Loading
   if (loading) {
     return (
       <div className="min-vh-100 d-flex align-items-center justify-content-center">
@@ -158,53 +159,46 @@ export default function HalamanKuisGabungan() {
     );
   }
 
-  // Tampilan Error
   if (error) {
     return (
       <div className="min-vh-100 d-flex flex-column">
         <Navbar />
         <div className="container flex-grow-1 d-flex align-items-center justify-content-center">
-          <div className="text-center">
-            <Alert variant="danger">
-              <h4>Oops! Terjadi Kesalahan</h4>
-              <p>{error}</p>
-            </Alert>
+          <Alert variant="danger" className="text-center">
+            <h4>Oops! Terjadi Kesalahan</h4>
+            <p>{error}</p>
             <Button variant="primary" onClick={() => navigate(-1)}>
               Kembali
             </Button>
-          </div>
+          </Alert>
         </div>
         <Footer />
       </div>
     );
   }
 
-  // Jika quiz tidak ditemukan
   if (!quiz) {
     return (
       <div className="min-vh-100 d-flex flex-column">
         <Navbar />
         <div className="container flex-grow-1 d-flex align-items-center justify-content-center">
-          <div className="text-center">
-            <Alert variant="warning">
-              <h4>Kuis Tidak Ditemukan</h4>
-              <p>Maaf, kuis yang Anda cari tidak tersedia.</p>
-            </Alert>
+          <Alert variant="warning" className="text-center">
+            <h4>Kuis Tidak Ditemukan</h4>
+            <p>Maaf, kuis yang Anda cari tidak tersedia.</p>
             <Button variant="primary" onClick={() => navigate("/dashboard")}>
               Kembali ke Dashboard
             </Button>
-          </div>
+          </Alert>
         </div>
         <Footer />
       </div>
     );
   }
 
-  // Tampilan Utama Kuis
   return (
     <div className="quiz-page min-vh-100 d-flex flex-column">
       <Navbar />
-      {/* Title Header */}
+
       <div className="d-flex text-center p-5 align-items-center justify-content-center position-relative">
         <Link
           to={`/course/${quiz.id}`}
@@ -227,7 +221,6 @@ export default function HalamanKuisGabungan() {
         <Card className="shadow-lg border-0 rounded-4 overflow-hidden">
           <Card.Body className="p-sm-5 p-4">
             {showScore ? (
-              // Tampilan Skor Akhir
               <div className="text-center">
                 <h3>
                   Skor Akhir Anda: {score} dari {quiz.questions.length}
@@ -255,7 +248,6 @@ export default function HalamanKuisGabungan() {
                 </Button>
               </div>
             ) : quizStarted ? (
-              // Tampilan Pertanyaan
               <div>
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <h5 className="mb-0">
@@ -276,12 +268,11 @@ export default function HalamanKuisGabungan() {
                       if (
                         opt === quiz.questions[currentQuestion].correctAnswer
                       ) {
-                        variant = "success"; // Jawaban benar
+                        variant = "success";
                       } else if (isSelected) {
-                        variant = "danger"; // Jawaban salah
+                        variant = "danger";
                       }
                     }
-
                     return (
                       <Button
                         key={idx}
@@ -298,7 +289,6 @@ export default function HalamanKuisGabungan() {
                 </div>
               </div>
             ) : (
-              // Tampilan Awal Kuis
               <div className="text-center">
                 <img
                   src={quiz.img}
@@ -320,7 +310,6 @@ export default function HalamanKuisGabungan() {
 
       <Footer />
 
-      {/* Modal untuk Review Jawaban */}
       <Modal show={showReview} onHide={handleCloseReview} centered size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Review Jawaban</Modal.Title>

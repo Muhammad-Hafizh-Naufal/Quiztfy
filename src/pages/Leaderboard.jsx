@@ -61,21 +61,42 @@ export default function Leaderboard() {
                   <tr>
                     <th className="py-3">No</th>
                     <th className="py-3">Username</th>
-                    <th className="py-3">Score</th>
+                    <th className="py-3">HTML</th>
+                    <th className="py-3">CSS</th>
+                    <th className="py-3">JavaScript</th>
+                    <th className="py-3">Total Score</th>
                   </tr>
                 </thead>
                 <tbody>
                   {dataLeaderboard.map((user, index) => (
                     <motion.tr
-                      key={index}
+                      key={user.id}
                       className="fs-5"
                       variants={rowVariants}
-                      whileHover={{ scale: 1.02, backgroundColor: "#f8f9fa" }} // Efek hover
-                      transition={{ type: "spring", stiffness: 300 }} // Transisi spring
+                      whileHover={{
+                        scale: 1.02,
+                        backgroundColor: "#f8f9fa",
+                      }}
+                      transition={{ type: "spring", stiffness: 300 }}
                     >
                       <td className="fw-bold text-secondary">{index + 1}</td>
                       <td className="fw-semibold">{user.fullName}</td>
-                      <td className="fw-bold text-success">{user.score}</td>
+                      <td className="fw-bold text-success">
+                        {user.materialScores.find(
+                          (m) => m.material.title === "HTML"
+                        )?.score ?? "-"}
+                      </td>
+                      <td className="fw-bold text-success">
+                        {user.materialScores.find(
+                          (m) => m.material.title === "CSS"
+                        )?.score ?? "-"}
+                      </td>
+                      <td className="fw-bold text-success">
+                        {user.materialScores.find(
+                          (m) => m.material.title === "JavaScript"
+                        )?.score ?? "-"}
+                      </td>
+                      <td className="fw-bold text-primary">{user.score}</td>
                     </motion.tr>
                   ))}
                 </tbody>
