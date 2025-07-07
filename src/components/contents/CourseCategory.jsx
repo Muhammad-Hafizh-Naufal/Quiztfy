@@ -163,8 +163,6 @@ export default function CourseCategory() {
                   {quiz.questions?.length || 0} soal
                   <br />
                   <strong>Waktu per Pertanyaan:</strong> 30 detik
-                  <br />
-                  <strong>Passing Score:</strong> 60%
                 </p>
               </div>
             </div>
