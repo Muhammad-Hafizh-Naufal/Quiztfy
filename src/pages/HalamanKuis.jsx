@@ -47,12 +47,16 @@ export default function HalamanKuisGabungan() {
           );
         }
 
-        const processedQuestions = data.questions.map((q) => ({
-          ...q,
-          options: Array.isArray(q.options)
+        const processedQuestions = data.questions.map((q) => {
+          const parsedOptions = Array.isArray(q.options)
             ? q.options
-            : JSON.parse(q.options || "[]"),
-        }));
+            : JSON.parse(q.options || "[]");
+
+          return {
+            ...q,
+            options: shuffleArray(parsedOptions), // 🔀 acak jawaban setiap soal
+          };
+        });
 
         setQuiz({ ...data, questions: processedQuestions });
       } catch (err) {
