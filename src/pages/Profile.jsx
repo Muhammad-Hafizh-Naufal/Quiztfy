@@ -141,11 +141,11 @@ export default function Profile() {
                       <small className="text-muted">Email</small>
                       <p className="mb-0 fw-medium">{userInfo.email}</p>
                     </div>
-                    <div className="mb-3">
+                    {/* <div className="mb-3">
                       <small className="text-muted">No. Telepon</small>
                       <p className="mb-0 fw-medium">{userInfo.phone}</p>
-                    </div>
-                    <div className="mb-3">
+                    </div> */}
+                    {/* <div className="mb-3">
                       <small className="text-muted">Institusi</small>
                       <p className="mb-0 fw-medium">{userInfo.institution}</p>
                     </div>
@@ -156,7 +156,7 @@ export default function Profile() {
                     <div className="mb-0">
                       <small className="text-muted">Semester</small>
                       <p className="mb-0 fw-medium">{userInfo.semester}</p>
-                    </div>
+                    </div> */}
                   </div>
                 ) : (
                   <div>

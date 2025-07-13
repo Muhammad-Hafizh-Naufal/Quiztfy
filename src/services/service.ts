@@ -177,6 +177,7 @@ const submitQuizResult = async (quizId, answers, score) => {
       `${API}/quiz/${quizId}/submit`,
       {
         answers,
+        score,
       },
       {
         headers: {
