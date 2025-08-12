@@ -84,10 +84,12 @@ export default function AboutUs() {
                 kebutuhan akan sarana belajar yang fleksibel dan mandiri semakin
                 meningkat. Banyak platform kuis online yang berfokus pada
                 kompetisi grup, namun belum banyak yang menyediakan sistem
-                evaluasi individu yang ramah pemula. Quiztfy hadir untuk
+                evaluasi individu yang ramah bagi pemula. Quiztfy hadir untuk
                 menjawab kebutuhan tersebut dengan menghadirkan platform kuis
-                berbasis MERN Stack yang memungkinkan pengguna belajar dan
-                mengevaluasi pemahaman mereka secara mandiri dan terstruktur.
+                berbasis web yang berfokus pada pembelajaran dasar frontend
+                development, khususnya HTML, CSS, dan JavaScript, sehingga
+                pengguna dapat belajar dan mengevaluasi pemahaman mereka secara
+                mandiri dan terstruktur.
               </p>
             </motion.div>
           </motion.div>
@@ -121,7 +123,7 @@ export default function AboutUs() {
               >
                 <h4>2. Dorong Karir di Dunia Digital</h4>
                 <p>
-                  Menginspirasi siswa memahami potensi karir di bidang
+                  Membantu pemula memahami langkah awal menuju karir di bidang
                   teknologi.
                 </p>
               </motion.div>
@@ -133,8 +135,8 @@ export default function AboutUs() {
               >
                 <h4>3. Tingkatkan Skill Digital Anak Bangsa</h4>
                 <p>
-                  Membekali pengguna dengan dasar keterampilan teknologi masa
-                  kini.
+                  Membekali pemula dengan pengetahuan dan keterampilan dasar
+                  dalam teknologi web.
                 </p>
               </motion.div>
             </div>
