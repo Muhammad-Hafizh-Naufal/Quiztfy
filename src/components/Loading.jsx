@@ -1,4 +1,5 @@
 import { Modal } from "react-bootstrap";
+import PropTypes from "prop-types";
 
 export default function Loading({ show }) {
   return (
@@ -22,3 +23,5 @@ export default function Loading({ show }) {
     </Modal>
   );
 }
+
+Loading.propTypes = { show: PropTypes.bool };

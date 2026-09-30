@@ -6,7 +6,7 @@ export default function CommingSoon() {
         <div className="text-center">
           <h1 className="display-3">Coming Soon</h1>
           <p className="lead">
-            We're working hard to bring you this page. Stay tuned!
+            We are working hard to bring you this page. Stay tuned!
           </p>
           <div className="mt-4">
             <Link to={"/"}>
