@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const API = "https://quizz-be.vercel.app/api";
+const API = import.meta.env.VITE_API_URL;
 
+// USER
 // leaderboard
 const leaderboard = async () => {
   try {
@@ -13,32 +14,64 @@ const leaderboard = async () => {
   }
 };
 
-// Register
-const register = async (formData) => {
-  try {
-    const response = await axios.post(`${API}/register`, formData);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
+// Login
 const login = async (formData) => {
   try {
     const response = await axios.post(`${API}/login`, formData);
 
     return response.data;
   } catch (error) {
-    console.log(error);
+    // Buat custom error object yang lebih predictable
+    const customError = new Error();
+
+    if (error.response?.data?.message) {
+      customError.message = error.response.data.message;
+    } else if (error.response?.data) {
+      customError.message =
+        typeof error.response.data === "string"
+          ? error.response.data
+          : "Login failed";
+    } else {
+      customError.message = error.message || "Network error";
+    }
+
+    throw customError;
+    // console.log(error);
   }
 };
-
-// quiz
-
-// getAllQuiz
-const getAllQuiz = async () => {
+// Register
+const register = async (formData: any) => {
   try {
-    const response = await axios.get(`${API}/quiz`);
+    const response = await axios.post(`${API}/register`, formData);
+    return response.data;
+  } catch (error: any) {
+    console.log("Service caught error:", error);
+
+    // Buat custom error object yang lebih predictable
+    const customError = new Error();
+
+    if (error.response?.data?.message) {
+      customError.message = error.response.data.message;
+    } else if (error.response?.data) {
+      customError.message =
+        typeof error.response.data === "string"
+          ? error.response.data
+          : "Registration failed";
+    } else {
+      customError.message = error.message || "Network error";
+    }
+
+    throw customError;
+  }
+};
+// user Info
+const getUserInfo = async () => {
+  try {
+    const response = await axios.get(`${API}/user/info`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
     return response.data;
   } catch (error) {
     const err = error as Error;
@@ -46,54 +79,152 @@ const getAllQuiz = async () => {
   }
 };
 
-// get quiz by name/id
-const getQuizById = async (id) => {
+// update user
+const updateUser = async (formData) => {
   try {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      throw new Error("No token found");
+    // Filter out empty password
+    const cleanData = { ...formData };
+    if (!cleanData.password || cleanData.password.trim() === "") {
+      delete cleanData.password;
     }
 
-    const response = await axios.get(`${API}/quiz/${id}`, {
+    const response = await axios.patch(`${API}/user/update`, cleanData, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
     return response.data;
   } catch (error) {
-    const err = error as Error;
-    console.error("Error fetching quiz:", err.message);
-    throw err; // Lempar error agar bisa ditangani oleh komponen
+    console.log("Service caught error:", error);
+
+    // Buat custom error object yang lebih predictable
+    const customError = new Error();
+
+    if (error.response?.data?.message) {
+      customError.message = error.response.data.message;
+    } else if (error.response?.data) {
+      customError.message =
+        typeof error.response.data === "string"
+          ? error.response.data
+          : "Registration failed";
+    } else {
+      customError.message = error.message || "Network error";
+    }
+
+    throw customError;
   }
 };
 
-// question Submit
-
-const questionSubmit = async (formData) => {
+// materi
+const getAllMateri = async () => {
   try {
-    const token = localStorage.getItem("token"); // Ambil token dari localStorage
-    if (!token) {
-      throw new Error("No token found");
-    }
-
-    const response = await axios.post(`${API}/quiz/submit`, formData, {
+    const response = await axios.get(`${API}/material`, {
       headers: {
-        Authorization: `Bearer ${token}`, // Sertakan token dalam header
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
     return response.data;
   } catch (error) {
     const err = error as Error;
     console.log(err.message);
-    throw err;
   }
 };
+
+const getMateriById = async (id) => {
+  try {
+    const response = await axios.get(`${API}/material/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    const err = error as Error;
+    console.log(err.message);
+  }
+};
+const getSectionsByMaterialId = async (materialId) => {
+  try {
+    const response = await axios.get(`${API}/material/${materialId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return response.data.sections;
+  } catch (error) {
+    console.error("Error fetching material sections:", error);
+    return [];
+  }
+};
+
+const getQuizById = async (quizId) => {
+  try {
+    const response = await axios.get(`${API}/quiz/${quizId}/quiz`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching quiz:", error);
+    throw error;
+  }
+};
+
+const submitQuizResult = async (quizId, answers, score) => {
+  try {
+    const response = await axios.post(
+      `${API}/quiz/${quizId}/submit`,
+      {
+        answers,
+        score,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error submitting quiz:", error);
+    throw error;
+  }
+};
+
+const review = async (quizId) => {
+  try {
+    const response = await axios.post(
+      `${API}/quiz/${quizId}/review`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error submitting quiz:", error);
+    throw error;
+  }
+};
+
 
 export default {
+  // user
   leaderboard,
-  register,
   login,
-  getAllQuiz,
+  register,
+  getUserInfo,
+  updateUser,
+
+  // quiz
   getQuizById,
-  questionSubmit,
+  submitQuizResult,
+
+  // materi
+  getAllMateri,
+  getMateriById,
+  getSectionsByMaterialId,
 };

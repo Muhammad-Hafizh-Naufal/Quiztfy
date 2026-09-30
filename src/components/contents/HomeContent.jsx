@@ -4,21 +4,22 @@ import service from "../../services/service";
 import "../../../src/App.css";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import "../../styles/Dashboard.css";
 
-export default function Content() {
+export default function HomeContent() {
   const [course, setCourse] = useState([]);
   const [isDataFetched, setIsDataFetched] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleStartQuiz = (categoryName) => {
-    navigate(`/quiz/${categoryName}`);
+  const courseHandler = (id) => {
+    navigate(`/course/${id}`);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await service.getAllQuiz();
+        const data = await service.getAllMateri();
         setCourse(data);
         setIsDataFetched(true);
       } catch (error) {
@@ -45,11 +46,6 @@ export default function Content() {
     show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
-  // const fadeIn = {
-  //   hidden: { opacity: 0 },
-  //   show: { opacity: 1, y: 0, transition: { duration: 1 } },
-  // };
-
   const fadeIn = {
     hidden: { opacity: 0, scale: 0.8 },
     show: {
@@ -71,7 +67,7 @@ export default function Content() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
-          className=" d-flex flex-column flex-md-row align-items-center justify-content-center gap-md-5 text-center p-5 bg-dark mb-5  rounded container-xl"
+          className="d-flex bg-dark flex-column flex-md-row align-items-center justify-content-center gap-md-5 text-center p-5 bg-gradient rounded container-xl shadow-lg mb-5"
         >
           <img src="../../assets/category/Materi.png" alt="" />
           <h1 className="fontG fw-bold py-5 display-3 animated-gradient-text">
@@ -87,7 +83,7 @@ export default function Content() {
           viewport={{ once: true }}
           className="text-center mb-5"
         >
-          <h1 className="mb-3">Personalize Your Quiz Experience</h1>
+          <h1 className="mb-3 ">Personalize Your Quiz Experience</h1>
           <p className="text-muted">
             Choose your topics and materials to create a customized learning
             path that suits your interests and expertise
@@ -95,39 +91,32 @@ export default function Content() {
         </motion.div>
 
         {/* Cards Container */}
-        {isDataFetched && ( // Hanya render animasi jika data sudah di-fetch
+        {isDataFetched && (
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="show"
-            className="d-flex flex-wrap justify-content-center gap-3"
+            className="container d-flex flex-column flex-md-row justify-content-center gap-5"
           >
-            {course.map((category, index) => (
-              // Single Card
-              <motion.div
-                variants={cardVariants}
-                key={index}
-                className="col-12 col-md-6 col-lg-3 mb-4"
-              >
+            {course.map((materials, index) => (
+              <motion.div variants={cardVariants} key={index} className="">
                 <Link
-                  onClick={() => handleStartQuiz(category.id)}
+                  onClick={() => courseHandler(materials.id)}
                   className="text-decoration-none text-dark"
                 >
-                  <div className="card h-100 rounded-4 border-0 shadow-sm">
-                    <div className="text-center bg-light p-4 rounded-top-4">
+                  <div className="d-flex  card card-custom border-0 h-100 shadow-sm">
+                    <div className="bg-light text-center p-4">
                       <img
-                        src={category.img}
-                        className="card-img-top"
-                        alt={`${category.name} Icon`}
-                        style={{ maxWidth: "120px" }}
+                        src={materials.imgUrl}
+                        className="img-fluid"
+                        alt={materials.title}
+                        style={{ maxHeight: "120px" }}
                       />
                     </div>
-                    <div className="card-body">
-                      <h5 className="card-title fw-semibold mb-3">
-                        <h4>{category.title}</h4>
-                      </h5>
+                    <div className="card-body text-center">
+                      <h5 className="card-title fw-bold">{materials.title}</h5>
                       <p className="card-text text-muted">
-                        {category.description}
+                        {materials.content}
                       </p>
                     </div>
                   </div>
